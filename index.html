@@ -747,7 +747,18 @@
         <footer class="bg-gray-800 text-white py-4 mt-8">
             <div class="container mx-auto px-4 text-center">
                 <p>&copy; 2025 Sopheareach Te. All rights reserved.</p>
-                <p class="mt-2 text-gray-400">Visitors: <span id="visitorCount">Loading...</span></p>
+                <p class="mt-2 text-gray-400">Visitors:
+                </p>
+                <div style="display: block;margin-left: auto;margin-right: auto;width: 10%;">
+                <div id="sfc71zxuzy7m1k1lajxlywmkeaqp1j45s2n"></div>
+                <script type="text/javascript"
+                    src="https://counter4.optistats.ovh/private/counter.js?c=71zxuzy7m1k1lajxlywmkeaqp1j45s2n&down=async"
+                    async></script>
+                <a href="https://www.freecounterstat.com"></a><noscript><a href="https://www.freecounterstat.com"
+                        title="hit counter"><img
+                            src="https://counter4.optistats.ovh/private/freecounterstat.php?c=71zxuzy7m1k1lajxlywmkeaqp1j45s2n"
+                            border="0" title="hit counter" alt="hit counter"></a></noscript>
+                </div>
             </div>
         </footer>
     </div>
@@ -1101,68 +1112,6 @@ window.addEventListener('resize', () => {
         sidebar.classList.remove('active');
         overlay.classList.remove('active');
         body.classList.remove('sidebar-open');
-    }
-});
-
-document.addEventListener('DOMContentLoaded', function() {
-    // Get the visitor count element
-    const visitorCountElement = document.getElementById('visitorCount');
-    
-    // If the element doesn't exist, exit early
-    if (!visitorCountElement) {
-        console.error('Visitor count element not found');
-        return;
-    }
-    
-    // Create a unique namespace specific to your site
-    const namespace = 'sopheareachte.github.iomath-formula';
-    const key = 'visits';
-    
-    // Check if this user has visited before
-    let hasVisited = localStorage.getItem('hasVisited');
-    
-    if (!hasVisited) {
-        // First visit - increment the counter
-        fetch(`https://api.countapi.xyz/hit/${namespace}/${key}`)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`CountAPI returned ${response.status}`);
-                }
-                return response.json();
-            })
-            .then(data => {
-                console.log('Counter updated:', data);
-                visitorCountElement.textContent = data.value.toLocaleString();
-                localStorage.setItem('hasVisited', 'true');
-            })
-            .catch(error => {
-                console.error('Error updating visitor count:', error);
-                visitorCountElement.textContent = 'Error';
-                
-                // Fallback to get request if hit fails
-                fallbackGetCount(visitorCountElement, namespace, key);
-            });
-    } else {
-        // Returning visitor - just get the current count
-        fallbackGetCount(visitorCountElement, namespace, key);
-    }
-    
-    function fallbackGetCount(element, ns, k) {
-        fetch(`https://api.countapi.xyz/get/${ns}/${k}`)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`CountAPI returned ${response.status}`);
-                }
-                return response.json();
-            })
-            .then(data => {
-                console.log('Counter retrieved:', data);
-                element.textContent = data.value.toLocaleString();
-            })
-            .catch(error => {
-                console.error('Error fetching visitor count:', error);
-                element.textContent = 'Error';
-            });
     }
 });
     </script>
