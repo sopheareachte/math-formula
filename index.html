@@ -1105,37 +1105,38 @@ window.addEventListener('resize', () => {
 });
 
 document.addEventListener('DOMContentLoaded', function() {
+    // Get the visitor count element
     const visitorCountElement = document.getElementById('visitorCount');
     
-    // Create a unique namespace for your site
-    const namespace = 'mathformulas.yoursite';
+    // Create a unique namespace specific to your site
+    const namespace = 'math-formula-sopheareach';
+    const key = 'visits';
     
-    // Generate a visitor ID if not exists
-    let visitorId = localStorage.getItem('visitorId');
-    if (!visitorId) {
-        visitorId = 'visitor_' + Math.random().toString(36).substr(2, 9);
-        localStorage.setItem('visitorId', visitorId);
-        
-        // Increment count for new visitors
-        fetch(`https://api.countapi.xyz/hit/${namespace}/visits`)
+    // Check if this user has visited before
+    let hasVisited = localStorage.getItem('hasVisited');
+    
+    if (!hasVisited) {
+        // First visit - increment the counter
+        fetch(`https://api.countapi.xyz/hit/${namespace}/${key}`)
             .then(response => response.json())
             .then(data => {
-                visitorCountElement.textContent = data.value;
+                visitorCountElement.textContent = data.value.toLocaleString();
+                localStorage.setItem('hasVisited', 'true');
             })
             .catch(error => {
                 console.error('Error updating visitor count:', error);
-                visitorCountElement.textContent = 'Error';
+                visitorCountElement.textContent = 'Error loading count';
             });
     } else {
-        // Just get the count for returning visitors
-        fetch(`https://api.countapi.xyz/get/${namespace}/visits`)
+        // Returning visitor - just get the current count
+        fetch(`https://api.countapi.xyz/get/${namespace}/${key}`)
             .then(response => response.json())
             .then(data => {
-                visitorCountElement.textContent = data.value;
+                visitorCountElement.textContent = data.value.toLocaleString();
             })
             .catch(error => {
                 console.error('Error fetching visitor count:', error);
-                visitorCountElement.textContent = 'Error';
+                visitorCountElement.textContent = 'Error loading count';
             });
     }
 });
