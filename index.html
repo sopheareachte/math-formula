@@ -17,848 +17,14 @@
 </script>
     <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.6.2"></script>
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-    <style>
-        html {
-            scroll-behavior: smooth;
-        }
-        body {
-            font-family: 'Inter', sans-serif;
-        }
-        .search-container {
-            position: relative;
-            flex-grow: 1;
-            max-width: 500px;
-            margin-left: auto;
-            z-index: 50;
-        }
-        .search-input-wrapper {
-            position: relative;
-            display: flex;
-            align-items: center;
-        }
-        #search-input {
-            width: 100%;
-            padding: 0.5rem 1rem 0.5rem 2.5rem;
-            border: 2px solid #e2e8f0;
-            border-radius: 0.75rem;
-            font-size: 0.9rem;
-            transition: all 0.3s ease;
-            background-color: white;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-        }
-        #search-input:focus {
-            border-color: #3b82f6;
-            box-shadow: 0 4px 6px rgba(59, 130, 246, 0.15);
-            outline: none;
-        }
-        .search-icon {
-            position: absolute;
-            left: 0.75rem;
-            color: #64748b;
-            width: 1rem;
-            height: 1rem;
-            pointer-events: none;
-        }
-        #search-results-container {
-            position: absolute;
-            width: 100%;
-            z-index: 45;
-            top: calc(100% + 10px);
-            border-radius: 0.75rem;
-            background-color: white;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-            border: 1px solid #e2e8f0;
-            max-height: 350px;
-            overflow-y: auto;
-            display: none;
-        }
-        #search-results {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-        #search-results li {
-            padding: 0.85rem;
-            border-bottom: 1px solid #e2e8f0;
-            cursor: pointer;
-            transition: background-color 0.2s;
-        }
-        #search-results li:last-child {
-            border-bottom: none;
-        }
-        #search-results li:hover {
-            background-color: #f0f9ff;
-        }
-        #search-results li h4 {
-            margin-bottom: 0.25rem;
-        }
-        #search-results li .formula {
-            margin-top: 0.5rem;
-            padding: 0.5rem;
-            background-color: #f8fafc;
-            border-radius: 0.25rem;
-        }
-        .formula-card {
-            background-color: white;
-            border-radius: 1rem;
-            padding: 1.5rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            transition: all 0.3s ease;
-            border: 1px solid #e2e8f0;
-        }
-        .formula-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-        }
-        .sidebar {
-            width: 250px;
-            height: 100vh;
-            position: fixed;
-            left: 0;
-            top: 0;
-            background-color: white;
-            border-right: 1px solid #e2e8f0;
-            box-shadow: 2px 0 8px rgba(0, 0, 0, 0.05);
-            overflow-y: auto;
-            z-index: 30;
-            padding-top: 60px;
-            transition: transform 0.3s ease;
-        }
-        .sidebar-menu {
-            padding: 1rem;
-        }
-        .sidebar-category {
-            font-weight: 600;
-            color: #2d3748;
-            margin-top: 1rem;
-            margin-bottom: 0.5rem;
-            font-size: 0.875rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-        .sidebar-link {
-            display: block;
-            padding: 0.75rem 1rem;
-            color: #4b5563;
-            text-decoration: none;
-            border-radius: 0.5rem;
-            margin: 0.25rem 0;
-            transition: all 0.2s ease;
-        }
-        .sidebar-link:hover {
-            background-color: #f0f9ff;
-            color: #2563eb;
-            transform: translateX(4px);
-        }
-        .sidebar-link.active {
-            background-color: #3b82f6;
-            color: white;
-        }
-        .site-header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            background-color: white;
-            border-bottom: 1px solid #e2e8f0;
-            z-index: 40;
-            height: auto;
-            min-height: 65px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        }
-        .header-content {
-            padding: 0.75rem 1rem;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            flex-wrap: wrap;
-        }
-        .site-title {
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: #1e293b;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        .section-title {
-            font-size: 1.875rem;
-            color: #1e293b;
-            margin-bottom: 2rem;
-            position: relative;
-            padding-bottom: 0.75rem;
-        }
-        .section-title::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 60px;
-            height: 4px;
-            background: linear-gradient(to right, #3b82f6, #60a5fa);
-            border-radius: 2px;
-        }
-        .green::after {
-            background: #00a63e!important;
-        }
-        .formula {
-            background-color: #f8fafc;
-            padding: 1rem;
-            border-radius: 0.5rem;
-            margin: 0.5rem 0;
-            transition: all 0.2s ease;
-        }
-        .formula:hover {
-            background-color: #f0f9ff;
-            transform: scale(1.02);
-        }
-        @media (max-width: 1024px) {
-            .menu-toggle {
-                display: block;
-            }
-            .sidebar {
-                transform: translateX(-100%);
-                z-index: 50;
-                box-shadow: 4px 0 10px rgba(0, 0, 0, 0.1);
-            }
-            .sidebar.active {
-                transform: translateX(0);
-            }
-            .content-wrapper {
-                margin-left: 0;
-            }
-            .formula-card {
-                margin-bottom: 1rem;
-            }
-            .sidebar-overlay {
-                display: block;
-            }
-            .sidebar-overlay.active {
-                opacity: 1;
-            }
-            body.sidebar-open {
-                overflow: hidden;
-            }
-        }
-        @media (max-width: 640px) {
-            .search-container {
-                padding: 0 0.5rem;
-            }
-            .section-title {
-                font-size: 1.5rem;
-            }
-        }
-        .content-wrapper {
-            margin-left: 250px;
-            min-height: 100vh;
-            padding-top: 40px;
-            transition: margin-left 0.3s ease;
-        }
-        main.container {
-            padding-top: 1rem;
-        }
-        .container {
-            width: 100%;
-            
-            padding: 0 1rem;
-        }
-        .formula-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1.5rem;
-            padding: 1rem;
-        }
-        @media (max-width: 1280px) {
-            .formula-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-        @media (max-width: 1024px) {
-            .formula-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 1rem;
-            }
-        }
-        @media (max-width: 768px) {
-            .formula-grid {
-                grid-template-columns: 1fr;
-                padding: 0.5rem;
-            }
-            .search-container {
-                margin: 1rem auto;
-            }
-            .formula-card {
-                margin-bottom: 1rem;
-            }
-        }
-        @media (max-width: 640px) {
-            .header-content {
-                padding: 0.5rem;
-            }
-            .site-header h1 {
-                font-size: 1.5rem;
-            }
-            .search-container {
-                margin: 0.5rem auto;
-            }
-            #search-input {
-                padding: 0.75rem 0.75rem 0.75rem 2.5rem;
-            }
-            .formula-card {
-                padding: 1rem;
-            }
-            .section-title {
-                font-size: 1.5rem;
-                margin-bottom: 1rem;
-            }
-        }
-        .px-4 {
-            padding-left: 1rem;
-            padding-right: 1rem;
-        }
-        .py-8 {
-            padding-top: 2rem;
-            padding-bottom: 2rem;
-        }
-        @media (max-width: 640px) {
-            .px-4 {
-                padding-left: 0.5rem;
-                padding-right: 0.5rem;
-            }
-            .py-8 {
-                padding-top: 1rem;
-                padding-bottom: 1rem;
-            }
-        }
-        .sidebar-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: 25;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            pointer-events: none;
-        }
-        .sidebar-overlay.active {
-            opacity: 1;
-            pointer-events: auto;
-        }
-        /* Menu Toggle Button - Hidden on desktop */
-        .menu-toggle {
-            display: none; /* Hidden by default */
-            padding: 0.5rem;
-            background-color: transparent;
-            border: none;
-            cursor: pointer;
-        }
-        /* Updated Sidebar Styles */
-        .sidebar {
-            width: 250px;
-            height: 100vh;
-            position: fixed;
-            left: 0;
-            top: 0;
-            background-color: white;
-            border-right: 1px solid #e2e8f0;
-            box-shadow: 2px 0 8px rgba(0, 0, 0, 0.05);
-            overflow-y: auto;
-            z-index: 30;
-            padding-top: 80px;
-            transition: transform 0.3s ease;
-        }
-        /* Enhanced sidebar overlay */
-        .sidebar-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: 25;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-        /* Improved responsive behavior */
-        @media (max-width: 1024px) {
-            .menu-toggle {
-                display: block;
-            }
-            
-            .sidebar {
-                transform: translateX(-100%);
-                z-index: 50;
-                box-shadow: 4px 0 10px rgba(0, 0, 0, 0.1);
-            }
-            
-            .sidebar.active {
-                transform: translateX(0);
-            }
 
-            .container {
-                margin: 0 auto;
-            }
-            
-            .content-wrapper {
-                margin-left: 0; /* No margin on mobile/tablet */
-                padding-top: 50px;
-            }
-            
-            .sidebar-overlay {
-                display: block;
-            }
-            
-            .sidebar-overlay.active {
-                opacity: 1;
-            }
-            
-            body.sidebar-open {
-                overflow: hidden;
-            }
-        }
-        /* Further optimize for phone sizes */
-        @media (max-width: 480px) {
-            .sidebar {
-                width: 85%; /* Wider sidebar on very small screens */
-                max-width: 300px;
-            }
-        }
-        /* Improved formula card styles with better responsiveness */
-        .formula-card {
-            background-color: white;
-            border-radius: 1rem;
-            padding: 1.5rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            transition: all 0.3s ease;
-            border: 1px solid #e2e8f0;
-        }
-        
-        .formula-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-        }
-        
-        /* Responsive formula grid */
-        .formula-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1.5rem;
-            padding: 1rem;
-        }
-        
-        /* Responsive adjustments */
-        @media (max-width: 1280px) {
-            .formula-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-        
-        @media (max-width: 1024px) {
-            .formula-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 1rem;
-            }
-        }
-        
-        @media (max-width: 768px) {
-            .formula-grid {
-                grid-template-columns: 1fr;
-                padding: 0.5rem;
-            }
-            
-            .formula-card {
-                margin-bottom: 1rem;
-            }
-        }
-        
-        /* Phone-specific optimizations */
-        @media (max-width: 640px) {
-            .formula-card {
-                padding: 1rem;
-                border-radius: 0.75rem;
-                width: 100%;
-                max-width: 100%;
-                box-sizing: border-box;
-                margin-bottom: 1rem;
-            }
-            
-            .formula {
-                overflow-x: auto; /* Allow horizontal scrolling for long formulas */
-                padding: 0.75rem;
-                font-size: 0.9rem;
-            }
-            
-            .formula-grid {
-                padding: 0.5rem;
-                gap: 0.75rem;
-            }
-            
-            .section-title {
-                font-size: 1.5rem;
-                margin-bottom: 1rem;
-                padding-left: 0.5rem;
-            }
-            
-            /* Ensure content doesn't overflow the screen width */
-            .container {
-                width: 100%;
-                padding: 0 0.5rem;
-                box-sizing: border-box;
-            }
-        }
-        
-        /* Make sure formulas don't overflow on very small screens */
-        @media (max-width: 380px) {
-            .formula-card {
-                padding: 0.75rem;
-            }
-            
-            .formula {
-                padding: 0.5rem;
-                font-size: 0.85rem;
-            }
-        }
-        
-        /* Update header styles for search integration */
-        .site-header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            background-color: white;
-            border-bottom: 1px solid #e2e8f0;
-            z-index: 40;
-            height: auto;
-            min-height: 65px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        }
-        
-        .header-content {
-            padding: 0.75rem 1rem;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            flex-wrap: wrap;
-        }
-        
-        /* Responsive adjustments for the header and search */
-        @media (max-width: 1024px) {
-            .header-content {
-                /*justify-content: space-between;*/
-            }
-            
-            .search-container {
-                order: 3;
-                margin-top: 0.5rem;
-                margin-left: 0;
-                max-width: 100%;
-                width: 100%;
-            }
-            
-            .site-header {
-                padding-bottom: 0.5rem;
-            }
-            
-            #search-results-container {
-                width: 100%;
-                left: 0;
-            }
-        }
-        
-        @media (max-width: 640px) {
-            .header-content {
-                padding: 0.5rem;
-                gap: 0.5rem;
-            }
-            
-            #search-input {
-                padding: 0.4rem 0.75rem 0.4rem 2rem;
-                font-size: 0.85rem;
-            }
-            
-            .search-icon {
-                left: 0.5rem;
-                width: 0.85rem;
-                height: 0.85rem;
-            }
-            
-            #search-results li {
-                padding: 0.65rem;
-            }
-            
-            #search-results li .formula {
-                padding: 0.3rem;
-                font-size: 0.8rem;
-            }
-        }
-        
-        /* Adjust content padding for fixed header */
-        .content-wrapper {
-            padding-top: 65px;
-        }
-        
-        @media (max-width: 1024px) {
-            .content-wrapper {
-                padding-top: 110px; /* Adjusted for two-row header */
-            }
-        }
 
-        .highlight-target {
-            animation: highlightFade 2s ease-out;
-        }
-
-        @keyframes highlightFade {
-            0% {
-                background-color: rgba(59, 130, 246, 0.1);
-                transform: scale(1.01);
-            }
-            100% {
-                background-color: transparent;
-                transform: scale(1);
-            }
-        }
-
-        /* Image Button Styles */
-        .image-button {
-            display: flex;
-            align-items: center;
-            width: 100%;
-            padding: 0.75rem 1rem;
-            background-color: #3b82f6;
-            color: white;
-            border: none;
-            border-radius: 0.5rem;
-            font-size: 0.875rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            margin-top: 0.5rem;
-        }
-
-        .image-button:hover {
-            background-color: #2563eb;
-            transform: translateX(4px);
-        }
-
-        .image-button svg {
-            width: 1.25rem;
-            height: 1.25rem;
-        }
-
-        /* Image Overlay Styles */
-        .image-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: rgba(0, 0, 0, 0.75);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 100;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .image-overlay.active {
-            display: flex;
-            opacity: 1;
-        }
-
-        .image-container {
-            position: relative;
-            max-width: 90%;
-            max-height: 90vh;
-            margin: 1rem;
-            background-color: white;
-            border-radius: 1rem;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-            padding: 1rem;
-        }
-
-        .overlay-image {
-            display: block;
-            max-width: 100%;
-            max-height: calc(90vh - 2rem);
-            height: auto;
-            border-radius: 0.5rem;
-        }
-
-        .close-button {
-            position: absolute;
-            top: -1rem;
-            right: -1rem;
-            background-color: white;
-            border: none;
-            border-radius: 50%;
-            width: 2.5rem;
-            height: 2.5rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            transition: all 0.2s ease;
-        }
-
-        .close-button:hover {
-            background-color: #f3f4f6;
-            transform: scale(1.1);
-        }
-
-        /* Responsive adjustments */
-        @media (max-width: 640px) {
-            .image-container {
-                max-width: 95%;
-                margin: 0.5rem;
-                padding: 0.5rem;
-            }
-
-            .close-button {
-                top: -0.75rem;
-                right: -0.75rem;
-                width: 2rem;
-                height: 2rem;
-            }
-
-            .close-button svg {
-                width: 1.25rem;
-                height: 1.25rem;
-            }
-        }
-
-        /* Interactive Circle Styles */
-        .interactive-circle-card {
-            grid-column: 1 / -1;
-            width: 100%;
-            max-width: 800px;
-            margin: 2rem auto;
-        }
-
-        .unit-circle-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 1.5rem;
-            padding: 1rem;
-            background-color: #f8fafc;
-            border-radius: 1rem;
-        }
-
-        #unitCircle {
-            max-width: 100%;
-            height: auto;
-            background-color: white;
-            border-radius: 0.5rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        }
-
-        .circle-controls {
-            width: 100%;
-            max-width: 300px;
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-
-        .angle-display {
-            text-align: center;
-            font-size: 1.25rem;
-            font-weight: 500;
-            color: #2563eb;
-        }
-
-        .trig-values {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1rem;
-            text-align: center;
-            font-size: 0.9rem;
-            color: #4b5563;
-        }
-
-        .trig-values div {
-            background-color: white;
-            padding: 0.75rem;
-            border-radius: 0.5rem;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-            min-height: 85px;
-        }
-
-        .trig-values span {
-            font-weight: 500;
-            color: #2563eb;
-        }
-
-        .angle-input-group {
-            width: 100%;
-            margin-bottom: 1rem;
-        }
-
-        .angle-input-wrapper {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            background-color: white;
-            border: 2px solid #e2e8f0;
-            border-radius: 0.5rem;
-            padding: 0.25rem;
-            transition: all 0.2s ease;
-        }
-
-        .angle-input-wrapper:focus-within {
-            border-color: #3b82f6;
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-        }
-
-        .angle-input {
-            flex: 1;
-            border: none;
-            padding: 0.5rem;
-            font-size: 1rem;
-            width: 100px;
-            outline: none;
-            text-align: right;
-            -moz-appearance: textfield;
-        }
-
-        .angle-input::-webkit-outer-spin-button,
-        .angle-input::-webkit-inner-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
-        }
-
-        .angle-unit-select {
-            border: none;
-            background-color: transparent;
-            padding: 0.5rem;
-            font-size: 1rem;
-            color: #4b5563;
-            cursor: pointer;
-            outline: none;
-        }
-
-        .angle-unit-select:focus {
-            color: #3b82f6;
-        }
-
-        @media (max-width: 640px) {
-            .angle-input-wrapper {
-                max-width: 200px;
-                margin: 0 auto;
-            }
-        }
-    </style>
 </head>
 <body class="bg-gray-50">
     <!-- Header -->
@@ -871,7 +37,7 @@
                     </svg>
                 </button>
                 <h1 class="text-3xl font-semibold">Math Formulas</h1>
-                
+
                 <!-- Added search bar to header -->
                 <div class="search-container">
                     <div class="search-input-wrapper">
@@ -902,13 +68,14 @@
             <div class="sidebar-category">Precalculus</div>
             <a href="#algebra" class="sidebar-link">Algebra</a>
             <a href="#trigonometry" class="sidebar-link">Trigonometry</a>
-            <a href="#analytic-geometry" class="sidebar-link">Analytic Geometry</a>
-            
+            <a href="#analytic-geometry" class="sidebar-link">Geometry</a>
+
             <div class="sidebar-category">Calculus</div>
+            <a href="#limit" class="sidebar-link">Limit</a>
             <a href="#derivatives" class="sidebar-link">Derivatives</a>
             <a href="#integrals" class="sidebar-link">Integrals</a>
-            <a href="#series" class="sidebar-link">Series and Sequences</a>
-            
+
+
             <div class="sidebar-category">Share</div>
             <button id="showImageBtn" class="image-button">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -930,21 +97,44 @@
                         <ul class="space-y-4">
                             <li>
                                 <div class="formula-title text-gray-700 font-medium mb-2">Quadratic Formula:</div>
-                                <div class="formula">\(\frac{-b \pm \sqrt{b^2 - 4ac}}{2a}\)</div>
+                                <div class="formula">\(x=\frac{-b \pm \sqrt{b^2 - 4ac}}{2a}\)</div>
                             </li>
                             <li>
-                                <div class="formula-title text-gray-700 font-medium mb-2">Binomial Theorem:</div>
-                                <div class="formula">\((a+b)^n = \sum_{k=0}^{n} \binom{n}{k} a^{n-k} b^k\)</div>
+                                <div class="formula-title text-gray-700 font-medium mb-2">Special Factoring Properties:</div>
+                                <div class="formula">\(x^2-y^2=(x+y)(x-y)\)</div>
+                                <div class="formula">\(x^2+2xy+y^2=(x+y)^2\)</div>
+                                <div class="formula">\(x^2-2xy+y^2=(x-y)^2\)</div>
+                                <div class="formula">\(x^3-y^3=(x-y)(x^2+xy+y^2)\)</div>
+                                <div class="formula">\(x^3+y^3=(x+y)(x^2-xy+y^2)\)</div>
                             </li>
                             <li>
                                 <div class="formula-title text-gray-700 font-medium mb-2">Logarithm Properties:</div>
-                                <div class="formula">
-                                    <ul class="list-disc list-inside">
-                                        <li>\(\log_b(mn) = \log_b(m) + \log_b(n)\)</li>
-                                        <li>\(\log_b\left(\frac{m}{n}\right) = \log_b(m) - \log_b(n)\)</li>
-                                        <li>\(\log_b(m^p) = p \log_b(m)\)</li>
-                                    </ul>
-                                </div>
+                                <div class="formula">\(y=\log_a(x) => a^y = x\)</div>
+                                <div class="formula">\(\log_a(xy) = \log_a(x) + \log_a(y)\)</div>
+                                <div class="formula">\(\log_a\left(\frac{x}{y}\right) = \log_a(x) - \log_a(y)\)</div>
+                                <div class="formula">\(\log_a(x^r) = r \log_a(x)\)</div>
+                                <div class="formula">\(a^{\log_a(x)}  = x\)</div>
+                                <div class="formula">\(\log_a(a^x) = x\)</div>
+                                <div class="formula">\(\log_a(1) = 0\)</div>
+                                <div class="formula">\(\log_a(a) = 1\)</div>
+                                <div class="formula">\(\log(x) = \log_{10}(x)\)</div>
+                                <div class="formula">\(\ln(x) = \log_e(x)\)</div>
+                                <div class="formula">\(\log_b(u) = \frac{\log_a(u)}{\log_a(b)} \)</div>
+                            </li>
+                            <li>
+                                <div class="formula-title text-gray-700 font-medium mb-2">Radical Properties:</div>
+                                <div class="formula">\(a^ma^n=a^{m+n} \)</div>
+                                <div class="formula">\((a^m)^n=a^{mn}\)</div>
+                                <div class="formula">\((ab)^n=a^{n}b^n\)</div>
+                                <div class="formula">\((\frac{a}{b})^n=\frac{a^n}{b^n}\)</div>
+                                <div class="formula">\(\frac{a^m}{a^n}=a^{m-n}\)</div>
+                                <div class="formula">\(a^{-n}=\frac{1}{a^n}\)</div>
+                                <div class="formula">\(a^{\frac{1}{n}}=\sqrt[n]{a}\)</div>
+                                <div class="formula">\(a^{\frac{m}{n}}=\sqrt[n]{a^m}\)</div>
+                                <div class="formula">\(a^{\frac{m}{n}}=(\sqrt[n]{a})^m\)</div>
+                                <div class="formula">\(\sqrt[n]{ab}=\sqrt[n]a\sqrt[n]b\)</div>
+                                <div class="formula">\(\sqrt[n]{\frac{a}{b}}=\frac{\sqrt[n]a}{\sqrt[n]b}\)</div>
+                                <div class="formula">\(\sqrt[m]{\sqrt[n]{a}}=\sqrt[mn]a\)</div>
                             </li>
                         </ul>
                     </div>
@@ -957,21 +147,13 @@
                             </li>
                             <li>
                                 <div class="formula-title text-gray-700 font-medium mb-2">Sum and Difference Formulas:</div>
-                                <div class="formula">
-                                    <ul class="list-disc list-inside">
-                                        <li>\(\sin(a \pm b) = \sin(a)\cos(b) \pm \cos(a)\sin(b)\)</li>
-                                        <li>\(\cos(a \pm b) = \cos(a)\cos(b) \mp \sin(a)\sin(b)\)</li>
-                                    </ul>
-                                </div>
+                                <div class="formula">\(\sin(a \pm b) = \sin(a)\cos(b) \pm \cos(a)\sin(b)\)</div>
+                                <div class="formula">\(\cos(a \pm b) = \cos(a)\cos(b) \mp \sin(a)\sin(b)\)</div>
                             </li>
                             <li>
                                 <div class="formula-title text-gray-700 font-medium mb-2">Double Angle Formulas:</div>
-                                <div class="formula">
-                                    <ul class="list-disc list-inside">
-                                        <li>\(\sin(2\theta) = 2\sin(\theta)\cos(\theta)\)</li>
-                                        <li>\(\cos(2\theta) = \cos^2(\theta) - \sin^2(\theta)\)</li>
-                                    </ul>
-                                </div>
+                                <div class="formula">\(\sin(2\theta) = 2\sin(\theta)\cos(\theta)\)</div>
+                                <div class="formula">\(\cos(2\theta) = \cos^2(\theta) - \sin^2(\theta)\)</div>
                             </li>
                             <li>
                                 <div class="formula-title text-gray-700 font-medium mb-2">Interactive Unit Circle:</div>
@@ -980,11 +162,11 @@
                                     <div class="circle-controls">
                                         <div class="angle-input-group">
                                             <div class="angle-input-wrapper">
-                                                <input 
-                                                    type="number" 
-                                                    id="angleSlider" 
-                                                    class="angle-input" 
-                                                    value="0" 
+                                                <input
+                                                    type="number"
+                                                    id="angleSlider"
+                                                    class="angle-input"
+                                                    value="0"
                                                     step="any"
                                                 >
                                                 <select id="angleUnit" class="angle-unit-select">
@@ -1007,8 +189,52 @@
                         </ul>
                     </div>
                     <div class="formula-card">
-                        <h3 id="analytic-geometry" class="text-lg font-semibold text-blue-600 mb-4">Analytic Geometry</h3>
+                        <h3 id="analytic-geometry" class="text-lg font-semibold text-blue-600 mb-4">Geometry</h3>
                         <ul class="space-y-4">
+                            <li>
+                                <div class="formula-title text-gray-700 font-medium mb-2">Pythagorean Theorem:</div>
+                                <div class="formula">\(c^2 = a^2 + b^2\)</div>
+                            </li>
+                            <li>
+                                <div class="formula-title text-gray-700 font-medium mb-2">Square:</div>
+                                <div class="formula">\(A = s^2\)</div>
+                                <div class="formula">\(C=4s\)</div>
+                            </li>
+                            <li>
+                                <div class="formula-title text-gray-700 font-medium mb-2">Rectangle:</div>
+                                <div class="formula">\(A = lw\)</div>
+                                <div class="formula">\(C=2l+2w\)</div>
+                            </li>
+                            <li>
+                                <div class="formula-title text-gray-700 font-medium mb-2">Triangle:</div>
+                                <div class="formula">\(A = \frac{1}{2}bh\)</div>
+                                <div class="formula">\(C=a+b+c\)</div>
+                            </li>
+                            <li>
+                                <div class="formula-title text-gray-700 font-medium mb-2">Circle:</div>
+                                <div class="formula">\(A = \pi r^2\)</div>
+                                <div class="formula">\(C=2\pi r\)</div>
+                            </li>
+                            <li>
+                                <div class="formula-title text-gray-700 font-medium mb-2">Cube:</div>
+                                <div class="formula">\(V = s^3\)</div>
+                                <div class="formula">\(S=6s^2\)</div>
+                            </li>
+                            <li>
+                                <div class="formula-title text-gray-700 font-medium mb-2">Rectangle Prism:</div>
+                                <div class="formula">\(V = lwh\)</div>
+                                <div class="formula">\(S=2(lw+wh+hl)\)</div>
+                            </li>
+                            <li>
+                                <div class="formula-title text-gray-700 font-medium mb-2">Cone:</div>
+                                <div class="formula">\(V = \frac{1}{3}\pi r^2 h\)</div>
+                                <div class="formula">\(S=\pi r(r+\sqrt{h^2+ r^2})\)</div>
+                            </li>
+                            <li>
+                                <div class="formula-title text-gray-700 font-medium mb-2">Sphere:</div>
+                                <div class="formula">\(V = \frac{4}{3}\pi r^3\)</div>
+                                <div class="formula">\(S=4\pi r^2\)</div>
+                            </li>
                             <li>
                                 <div class="formula-title text-gray-700 font-medium mb-2">Distance Formula:</div>
                                 <div class="formula">\(\sqrt{(x_2 - x_1)^2 + (y_2 - y_1)^2}\)</div>
@@ -1018,8 +244,12 @@
                                 <div class="formula">\((x - h)^2 + (y - k)^2 = r^2\)</div>
                             </li>
                             <li>
-                                <div class="formula-title text-gray-700 font-medium mb-2">Equation of a Line:</div>
+                                <div class="formula-title text-gray-700 font-medium mb-2">Slope-intercept form of a Line:</div>
                                 <div class="formula">\(y = mx + b\)</div>
+                            </li>
+                            <li>
+                                <div class="formula-title text-gray-700 font-medium mb-2">Point-slope form of a Line:</div>
+                                <div class="formula">\(y - y_1 = m(x - x_1)\)</div>
                             </li>
                         </ul>
                     </div>
@@ -1029,6 +259,123 @@
             <section id="calculus" class="mb-8">
                 <h2 class="section-title green">Calculus Formulas</h2>
                 <div class="formula-grid">
+                    <div class="formula-card">
+                        <h3 id="limit" class="text-lg font-semibold text-green-600 mb-4">Limit</h3>
+                        <ul class="space-y-4">
+                            <li>
+                                <div class="formula-title text-gray-700 font-medium mb-2">Limit Definition:</div>
+                                <div class="formula">\begin{gather*}lim_{x\to a^-}{f(x)}= lim_{x\to a^+}{f(x)}=L\\ lim_{x\to a}{f(x)}=L\end{gather*}</div>
+
+                                <div class="formula">\begin{gather*}if\hspace{0.3cm}lim_{x\to a^-}{f(x)}\neq lim_{x\to a^+}{f(x)}\\lim_{x\to a}{f(x)}=undefined\end{gather*}</div>
+
+                            </li>
+                            <li>
+                                <div class="formula-title text-gray-700 font-medium mb-2">Sum Rule:</div>
+                                <div class="formula">\begin{equation}{\small lim_{x\to a}{f(x)+g(x)}=lim_{x\to a}f(x)+lim_{x\to a}g(x)}\end{equation}</div>
+                            </li>
+                            <li>
+                                <div class="formula-title text-gray-700 font-medium mb-2">Difference Rule:</div>
+                                <div class="formula">\begin{equation}{\small lim_{x\to a}{f(x)-g(x)}=lim_{x\to a}f(x)-lim_{x\to a}g(x)}\end{equation}</div>
+                            </li>
+                            <li>
+                                <div class="formula-title text-gray-700 font-medium mb-2">Product Rule:</div>
+                                <div class="formula">\begin{equation}{\small lim_{x\to a}{f(x)*g(x)}=lim_{x\to a}f(x)*lim_{x\to a}g(x)}\end{equation}</div>
+                            </li>
+                            <li>
+                                <div class="formula-title text-gray-700 font-medium mb-2">Quotient Rule:</div>
+                                <div class="formula">\(lim_{x\to a}{\frac{f(x)}{g(x)}}=\frac{lim_{x\to a}f(x)}{lim_{x\to a}g(x)}\)</div>
+                            </li>
+                            <li>
+                                <div class="formula-title text-gray-700 font-medium mb-2">Ways to Solve Limit:</div>
+                                <div class="formula">
+                                    <ul class="list-disc list-inside">
+                                        <li style="list-style-type:none;"><b>1.Direct Substitution</b></li>
+                                        <li>When possible, substitute the value of x directly into the function to evaluate the limit.</li>
+                                        <li>Example: \(\lim_{x\to 2}{3x+4} = 3(2)+4=10\)</li>
+                                    </ul>
+                                </div>
+                                <div class="formula">
+                                    <ul class="list-disc list-inside">
+                                        <li style="list-style-type:none;"><b>2. Factoring</b></li>
+                                        <li>Factor the expression to simplify it, especially when you encounter indeterminate forms like \(\frac{0}{0}\).</li>
+                                        <li>Example: \begin{split}\lim_{x\to 2}{\frac{x^2 -4}{x-2}} & = lim_{x\to 2}{\frac{(x-2)(x+2)}{x-2}}\\ & =lim_{x\to 2}{x+2}=4\end{split}</li>
+                                    </ul>
+                                </div>
+                                <div class="formula">
+                                    <ul class="list-disc list-inside">
+                                        <li style="list-style-type:none;"><b>3. Rationalizing</b></li>
+                                        <li>Rationalize the numerator or denominator if there are square roots to eliminate indeterminate forms like \(\frac{0}{0}\).</li>
+                                        <li>Example: \(\lim_{x\to 0}{\frac{\sqrt{x+1} -1}{x}}\). Multiply numerator and denominator by \(\sqrt{x+1}+1\)</li>
+                                    </ul>
+                                </div>
+                                <div class="formula">
+                                    <ul class="list-disc list-inside">
+                                        <li style="list-style-type:none;"><b>4. L'Hopital's Rule</b></li>
+                                        <li>Use L'Hopital's Rule when limits result in indeterminate forms \(\frac{0}{0}\) or \(\frac{\infty}{infty}\). Differentiate the numerator and denominator separately.</li>
+                                        <li>Example: \(\lim_{x\to 0}{\frac{\sin x}{x}}\). <br>Apply L'Hopital's Rule: <br>\(f(x)=\sin x =>f'(x)=\cos x\)<br>\(g(x)=x=>g'(x)=1\).<br> \(\lim_{x\to 0}{\frac{\cos x}{1}}=1\) </li>
+                                    </ul>
+                                </div>
+                                <div class="formula">
+                                    <ul class="list-disc list-inside">
+                                        <li style="list-style-type:none;"><b>5. Squeeze Theorem</b></li>
+                                        <li>Use Squeeze Theorem when the function is “squeezed” between two other functions that have the same limit.</li>
+                                        <li>Example: \(\lim_{x\to 0}{x^2\sin {\frac{1}{x}}}=0\). <br>Since \(-x^2\leq x^2 \sin {\frac{1}{x}} \leq x^2\) </li>
+                                    </ul>
+                                </div>
+                                <div class="formula">
+                                    <ul class="list-disc list-inside">
+                                        <li style="list-style-type:none;"><b>6. Dominant Term for Infinity Limits</b></li>
+                                        <li>When \(x\rightarrow\infty\), focus on the dominant term (the highest power of x) in the numerator and denominator.</li>
+                                        <li>Example: \(\lim_{x\to \infty}{\frac{3x^2+5x}{2x^2-x}}=\lim_{x\to \infty}{\frac{3+\frac{5}{x}}{2-\frac{1}{x}}}=\frac{3}{2}\)</li>
+                                    </ul>
+                                </div>
+                                <div class="formula">
+                                    <ul class="list-disc list-inside">
+                                        <li style="list-style-type:none;"><b>7. Trigonometric Limits</b></li>
+                                        <li style="list-style-type:none;">Key limits to memorize:</li>
+                                        <li>\(\lim_{x\to 0}{\frac{\sin x}{x}}=1\)</li>
+                                        <li>\(\lim_{x\to 0}{\frac{\cos x -1}{x}}=0\)</li>
+                                        <li>\(\lim_{x\to 0}{\frac{1-\cos x}{x^2}}=\frac{1}{2}\)</li>
+                                    </ul>
+                                </div>
+                                <div class="formula">
+                                    <ul class="list-disc list-inside">
+                                        <li style="list-style-type:none;"><b>8. Logarithmic and Exponential Limits</b></li>
+                                        <li style="list-style-type:none;">Use properties of logarithms and exponentials to simplify limits:</li>
+                                        <li>\(\lim_{x\to 0^+}{\ln(x)} =-\infty\)</li>
+                                        <li>\(\lim_{x\to \infty}{e^x}=\infty\)</li>
+                                        <li>\(\lim_{x\to -\infty}{e^x}=0\)</li>
+                                    </ul>
+                                </div>
+                                <div class="formula">
+                                    <ul class="list-disc list-inside">
+                                        <li style="list-style-type:none;"><b>9. Change of Variables</b></li>
+                                        <li style="list-style-type:none;">Use substitution to simplify complicated expressions. Often used when dealing with limits approaching infinity or zero.</li>
+                                        <li>Example: \(\lim_{x\to \infty}{\frac{1}{x}}\)</li>
+                                        <li>Let \(u =\frac{1}{x}\)</li>
+                                        <li>So \(\lim_{x\to \infty}{\frac{1}{x}}=\lim_{u\to 0}{u}=0\)</li>
+                                    </ul>
+                                </div>
+                                <div class="formula">
+                                    <ul class="list-disc list-inside">
+                                        <li style="list-style-type:none;"><b>10. Limits at Infinity: Horizontal Asymptotes</b></li>
+                                        <li style="list-style-type:none;">For rational functions \(\frac{P(x)}{Q(x)}\), where \(P(x)\) and \(Q(x)\)  are polynomials:</li>
+                                        <li><b>If degrees of numerator and denominator are equal:</b> the limit is the ratio of leading coefficients.</li>
+                                        <li><b>If the degree of numerator is higher:</b> the limit is \(\infty\) or \(-\infty\).</li>
+                                        <li><b>If the degree of denominator is higher:</b> the limit is 0.</li>
+                                    </ul>
+                                </div>
+                                <div class="formula">
+                                    <ul class="list-disc list-inside">
+                                        <li style="list-style-type:none;"><b>11. Limits with Piecewise Functions</b></li>
+                                        <li style="list-style-type:none;">Check limits from both sides (left and right-hand limits). If they agree, that is the limit.</li>
+                                        <li>Example: For a piecewise function \begin{gather*}lim_{x\to a^-}{f(x)}= lim_{x\to a^+}{f(x)}=L\\ lim_{x\to a}{f(x)}=L\end{gather*} </li>
+
+                                    </ul>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
                     <div class="formula-card">
                         <h3 id="derivatives" class="text-lg font-semibold text-green-600 mb-4">Derivatives</h3>
                         <ul class="space-y-4">
@@ -1089,38 +436,13 @@
                             </li>
                         </ul>
                     </div>
-                    <div class="formula-card">
-                        <h3 id="series" class="text-lg font-semibold text-green-600 mb-4">Series and Sequences</h3>
-                        <ul class="space-y-4">
-                            <li>
-                                <div class="formula-title text-gray-700 font-medium mb-2">Arithmetic Sequence:</div>
-                                <div class="formula">\(a_n = a_1 + (n-1)d\)</div>
-                            </li>
-                            <li>
-                                <div class="formula-title text-gray-700 font-medium mb-2">Geometric Sequence:</div>
-                                <div class="formula">\(a_n = a_1 r^{n-1}\)</div>
-                            </li>
-                            <li>
-                                <div class="formula-title text-gray-700 font-medium mb-2">Sum of an Arithmetic Series:</div>
-                                <div class="formula">\(S_n = \frac{n}{2}(a_1 + a_n)\)</div>
-                            </li>
-                            <li>
-                                <div class="formula-title text-gray-700 font-medium mb-2">Sum of a Geometric Series:</div>
-                                <div class="formula">\(S_n = \frac{a_1(1 - r^n)}{1 - r}\)</div>
-                            </li>
-                            <li>
-                                <div class="formula-title text-gray-700 font-medium mb-2">Taylor Series:</div>
-                                <div class="formula">\(f(x) = \sum_{n=0}^{\infty} \frac{f^{(n)}(a)}{n!}(x-a)^n\)</div>
-                            </li>
-                        </ul>
-                    </div>
                 </div>
             </section>
         </main>
 
         <footer class="bg-gray-800 text-white py-4 mt-8">
             <div class="container mx-auto px-4 text-center">
-                <p>&copy; 2025 Sopheareach Te. All rights reserved.</p>
+                <p>&copy; 2025 <a href="https://sopheareachte.github.io/me/" target="_blank">Sopheareach Te</a>. All rights reserved.</p>
                 <p class="mt-2 text-gray-400">Visitors:
                 </p>
                 <div style="display: block;margin-left: auto;margin-right: auto;width: 10%;">
@@ -1148,813 +470,6 @@
             <img src="qr.png" alt="qr code" class="overlay-image">
         </div>
     </div>
-
-    <script>
-        const searchInput = document.getElementById('search-input');
-        const searchResultsContainer = document.getElementById('search-results-container');
-        const searchResultsList = document.getElementById('search-results');
-
-        const formulas = [
-            {
-                category: "Precalculus - Algebra",
-                title: "Quadratic Formula",
-                formula: "\\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}",
-                sectionId: "algebra"
-            },
-            {
-                category: "Precalculus - Algebra",
-                title: "Binomial Theorem",
-                formula: "(a+b)^n = \\sum_{k=0}^{n} \\binom{n}{k} a^{n-k} b^k",
-                sectionId: "algebra"
-            },
-            {
-                category: "Precalculus - Algebra",
-                title: "Logarithm Properties",
-                formula: [
-                    "\\log_b(mn) = \\log_b(m) + \\log_b(n)",
-                    "\\log_b\\left(\\frac{m}{n}\\right) = \\log_b(m) - \\log_b(n)",
-                    "\\log_b(m^p) = p \\log_b(m)",
-                ],
-                sectionId: "algebra"
-            },
-            {
-                category: "Precalculus - Trigonometry",
-                title: "Pythagorean Identity",
-                formula: "\\sin^2(\\theta) + \\cos^2(\\theta) = 1",
-                sectionId: "trigonometry"
-            },
-            {
-                category: "Precalculus - Trigonometry",
-                title: "Sum and Difference Formulas",
-                formula: [
-                    "\\sin(a \\pm b) = \\sin(a)\\cos(b) \\pm \\cos(a)\\sin(b)",
-                    "\\cos(a \\pm b) = \\cos(a)\\cos(b) \\mp \\sin(a)\\sin(b)",
-                ],
-                sectionId: "trigonometry"
-            },
-            {
-                category: "Precalculus - Trigonometry",
-                title: "Double Angle Formulas",
-                formula: [
-                    "\\sin(2\\theta) = 2\\sin(\\theta)\\cos(\\theta)",
-                    "\\cos(2\\theta) = \\cos^2(\\theta) - \\sin^2(\\theta)",
-                ],
-                sectionId: "trigonometry"
-            },
-            {
-                category: "Precalculus - Trigonometry",
-                title: "Interactive Unit Circle",
-                formula: [
-                    "\\sin(\\theta), \\cos(\\theta), \\tan(\\theta)",
-                ],
-                sectionId: "trigonometry"
-            },
-            {
-                category: "Precalculus - Analytic Geometry",
-                title: "Distance Formula",
-                formula: "\\sqrt{(x_2 - x_1)^2 + (y_2 - y_1)^2}",
-                sectionId: "analytic-geometry"
-            },
-            {
-                category: "Precalculus - Analytic Geometry",
-                title: "Equation of a Circle",
-                formula: "(x - h)^2 + (y - k)^2 = r^2",
-                sectionId: "analytic-geometry"
-            },
-            {
-                category: "Precalculus - Analytic Geometry",
-                title: "Equation of a Line",
-                formula: "y = mx + b",
-                sectionId: "analytic-geometry"
-            },
-            {
-                category: "Calculus - Derivatives",
-                title: "Power Rule",
-                formula: "\\frac{d}{dx}(x^n) = nx^{n-1}",
-                sectionId: "derivatives"
-            },
-            {
-                category: "Calculus - Derivatives",
-                title: "Product Rule",
-                formula: "\\frac{d}{dx}(uv) = u\\frac{dv}{dx} + v\\frac{du}{dx}",
-                sectionId: "derivatives"
-            },
-            {
-                category: "Calculus - Derivatives",
-                title: "Quotient Rule",
-                formula: "\\frac{d}{dx}\\left(\\frac{u}{v}\\right) = \\frac{v\\frac{du}{dx} - u\\frac{dv}{dx}}{v^2}",
-                sectionId: "derivatives"
-            },
-            {
-                category: "Calculus - Derivatives",
-                title: "Chain Rule",
-                formula: "\\frac{d}{dx}(f(g(x))) = f'(g(x))g'(x)",
-                sectionId: "derivatives"
-            },
-            {
-                category: "Calculus - Derivatives",
-                title: "Derivatives of Trigonometric Functions",
-                formula: [
-                    "\\frac{d}{dx}(\\sin x) = \\cos x",
-                    "\\frac{d}{dx}(\\cos x) = -\\sin x",
-                ],
-                sectionId: "derivatives"
-            },
-            {
-                category: "Calculus - Integrals",
-                title: "Power Rule",
-                formula: "\\int x^n dx = \\frac{x^{n+1}}{n+1} + C",
-                sectionId: "integrals"
-            },
-            {
-                category: "Calculus - Integrals",
-                title: "Sum/Difference Rule",
-                formula: "\\int [f(x) \\pm g(x)] dx = \\int f(x) dx \\pm \\int g(x) dx",
-                sectionId: "integrals"
-            },
-            {
-                category: "Calculus - Integrals",
-                title: "Integration by Substitution",
-                formula: "\\int f(g(x))g'(x) dx = \\int f(u) du",
-                sectionId: "integrals"
-            },
-            {
-                category: "Calculus - Integrals",
-                title: "Integration by Parts",
-                formula: "\\int u dv = uv - \\int v du",
-                sectionId: "integrals"
-            },
-            {
-                category: "Calculus - Integrals",
-                title: "Integrals of Trigonometric Functions",
-                formula: [
-                    "\\int \\sin x dx = -\\cos x + C",
-                    "\\int \\cos x dx = \\sin x + C",
-                ],
-                sectionId: "integrals"
-            },
-            {
-                category: "Calculus - Series and Sequences",
-                title: "Arithmetic Sequence",
-                formula: "a_n = a_1 + (n-1)d",
-                sectionId: "series"
-            },
-            {
-                category: "Calculus - Series and Sequences",
-                title: "Geometric Sequence",
-                formula: "a_n = a_1 r^{n-1}",
-                sectionId: "series"
-            },
-            {
-                category: "Calculus - Series and Sequences",
-                title: "Sum of an Arithmetic Series",
-                formula: "S_n = \\frac{n}{2}(a_1 + a_n)",
-                sectionId: "series"
-            },
-            {
-                category: "Calculus - Series and Sequences",
-                title: "Sum of a Geometric Series",
-                formula: "S_n = \\frac{a_1(1 - r^n)}{1 - r}",
-                sectionId: "series"
-            },
-            {
-                category: "Calculus - Series and Sequences",
-                title: "Taylor Series",
-                formula: "f(x) = \\sum_{n=0}^{\\infty} \\frac{f^{(n)}(a)}{n!}(x-a)^n",
-                sectionId: "series"
-            },
-        ];
-
-        const fuse = new Fuse(formulas, {
-    keys: ['title', 'category', 'formula'],
-    includeMatches: true,
-    threshold: 0.3,
-});
-
-searchInput.addEventListener('input', function() {
-    const query = this.value.trim();
-    if (query === '') {
-        searchResultsContainer.style.display = 'none';
-        searchResultsList.innerHTML = '';
-        return;
-    }
-
-    const results = fuse.search(query);
-    searchResultsList.innerHTML = '';
-
-    if (results.length === 0) {
-        searchResultsList.innerHTML = '<li class="text-gray-500">No results found</li>';
-        searchResultsContainer.style.display = 'block';
-    } else {
-        results.forEach(result => {
-            const li = document.createElement('li');
-            li.setAttribute('data-section-id', result.item.sectionId);
-            
-            let formulaHTML = '';
-
-            if (Array.isArray(result.item.formula)) {
-                formulaHTML = result.item.formula.map(f => `<p class="my-1 formula">\\(${f}\\)</p>`).join('');
-            } else {
-                formulaHTML = `<p class="formula">\\(${result.item.formula}\\)</p>`;
-            }
-
-            li.innerHTML = `
-                <h4 class="font-semibold text-blue-700">${highlightMatch(result.item.title, result.matches.filter(match => match.key === 'title'))}</h4>
-                <p class="text-gray-600">${highlightMatch(result.item.category, result.matches.filter(match => match.key === 'category'))}</p>
-                ${formulaHTML}
-            `;
-
-            searchResultsList.appendChild(li);
-        });
-
-        // Ensure MathJax processes the newly added content
-        MathJax.typesetPromise().then(() => {
-            searchResultsContainer.style.display = 'block';
-        }).catch(err => console.error("MathJax rendering error:", err));
-    }
-});
-
-function highlightMatch(text, matches) {
-    const matchedIndices = matches.flatMap(match => match.indices);
-    let highlightedText = '';
-    let lastIndex = 0;
-
-    for (const [start, end] of matchedIndices) {
-        highlightedText += text.slice(lastIndex, start);
-        highlightedText += `<span class="bg-yellow-200">${text.slice(start, end + 1)}</span>`;
-        lastIndex = end + 1;
-    }
-    highlightedText += text.slice(lastIndex);
-
-    return highlightedText;
-}
-
-// Update the click handler for search results
-searchResultsList.addEventListener('click', function(event) {
-    const listItem = event.target.closest('li'); // Use closest to ensure we get the li element
-    if (!listItem) return;
-
-    const sectionId = listItem.getAttribute('data-section-id');
-    if (sectionId) {
-        const targetElement = document.getElementById(sectionId);
-        if (targetElement) {
-            // Calculate header height for offset
-            const headerHeight = document.querySelector('.site-header').offsetHeight;
-            
-            // Get the element's position
-            const elementPosition = targetElement.getBoundingClientRect().top;
-            const offsetPosition = elementPosition + window.pageYOffset - headerHeight - 20; // Added 20px padding
-
-            // Smooth scroll to element
-            window.scrollTo({
-                top: offsetPosition,
-                behavior: 'smooth'
-            });
-
-            // Highlight the target element temporarily
-            targetElement.classList.add('highlight-target');
-            setTimeout(() => {
-                targetElement.classList.remove('highlight-target');
-            }, 2000);
-        }
-        
-        // Clear search
-        searchInput.value = '';
-        searchResultsContainer.style.display = 'none';
-        searchResultsList.innerHTML = '';
-    }
-});
-
-// Get references to DOM elements
-const menuToggle = document.getElementById('menuToggle');
-const sidebar = document.getElementById('sidebar');
-const overlay = document.getElementById('sidebarOverlay');
-const body = document.body;
-
-// Only toggle menu when clicking the menu button
-menuToggle.addEventListener('click', function(e) {
-    e.stopPropagation();
-    toggleSidebar();
-});
-
-// Only close menu when clicking the active overlay
-overlay.addEventListener('click', function(e) {
-    e.stopPropagation();
-    if (sidebar.classList.contains('active')) {
-        toggleSidebar();
-    }
-});
-
-// Toggle sidebar function
-function toggleSidebar() {
-    sidebar.classList.toggle('active');
-    overlay.classList.toggle('active');
-    body.classList.toggle('sidebar-open');
-}
-
-// Fix search functionality
-searchInput.addEventListener('click', function(e) {
-    e.stopPropagation(); // Prevent event from reaching document
-});
-
-searchResultsContainer.addEventListener('click', function(e) {
-    e.stopPropagation(); // Prevent event from reaching document
-});
-
-// Fix sidebar initialization
-function initializeSidebar() {
-    if (window.innerWidth > 1024) {
-        // Desktop view
-        sidebar.classList.remove('active');
-        overlay.classList.remove('active');
-        overlay.style.display = 'none';
-        body.classList.remove('sidebar-open');
-    } else {
-        // Mobile view
-        if (!sidebar.classList.contains('active')) {
-            overlay.style.display = 'block';
-            overlay.classList.remove('active');
-        }
-    }
-}
-
-// Initialize on page load
-document.addEventListener('DOMContentLoaded', initializeSidebar);
-
-// Update on window resize
-window.addEventListener('resize', initializeSidebar);
-
-// FIXED: Ensure links work properly and close sidebar on mobile
-document.querySelectorAll('.sidebar-link').forEach(link => {
-    link.addEventListener('click', (e) => {
-        e.preventDefault();
-        e.stopPropagation(); // Prevent event bubbling
-        
-        const targetId = link.getAttribute('href').substring(1);
-        const targetSection = document.getElementById(targetId);
-        
-        if (targetSection) {
-            const headerOffset = 90;
-            const elementPosition = targetSection.getBoundingClientRect().top;
-            const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-
-            window.scrollTo({
-                top: offsetPosition,
-                behavior: "smooth"
-            });
-        }
-
-        // Close sidebar on mobile
-        if (window.innerWidth <= 1024 && sidebar.classList.contains('active')) {
-            toggleSidebar();
-        }
-    });
-});
-
-// Close sidebar with escape key
-document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && sidebar.classList.contains('active')) {
-        toggleSidebar();
-    }
-});
-
-// FIXED: Ensure overlay is properly hidden on larger screens
-window.addEventListener('resize', () => {
-    if (window.innerWidth > 1024) {
-        sidebar.classList.remove('active');
-        overlay.classList.remove('active');
-        body.classList.remove('sidebar-open');
-    }
-});
-
-document.addEventListener('DOMContentLoaded', function() {
-    // Get the visitor count element
-    const visitorCountElement = document.getElementById('visitorCount');
-    
-    // If the element doesn't exist, exit early
-    if (!visitorCountElement) {
-        console.error('Visitor count element not found');
-        return;
-    }
-    
-    // Create a unique namespace specific to your site
-    const namespace = 'sopheareachte.github.iomath-formula';
-    const key = 'visits';
-    
-    // Check if this user has visited before
-    let hasVisited = localStorage.getItem('hasVisited');
-    
-    if (!hasVisited) {
-        // First visit - increment the counter
-        fetch(`https://api.countapi.xyz/hit/${namespace}/${key}`)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`CountAPI returned ${response.status}`);
-                }
-                return response.json();
-            })
-            .then(data => {
-                console.log('Counter updated:', data);
-                visitorCountElement.textContent = data.value.toLocaleString();
-                localStorage.setItem('hasVisited', 'true');
-            })
-            .catch(error => {
-                console.error('Error updating visitor count:', error);
-                visitorCountElement.textContent = 'Error';
-                
-                // Fallback to get request if hit fails
-                fallbackGetCount(visitorCountElement, namespace, key);
-            });
-    } else {
-        // Returning visitor - just get the current count
-        fallbackGetCount(visitorCountElement, namespace, key);
-    }
-    
-    function fallbackGetCount(element, ns, k) {
-        fetch(`https://api.countapi.xyz/get/${ns}/${k}`)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`CountAPI returned ${response.status}`);
-                }
-                return response.json();
-            })
-            .then(data => {
-                console.log('Counter retrieved:', data);
-                element.textContent = data.value.toLocaleString();
-            })
-            .catch(error => {
-                console.error('Error fetching visitor count:', error);
-                element.textContent = 'Error';
-            });
-    }
-});
-
-// Image overlay functionality
-const showImageBtn = document.getElementById('showImageBtn');
-const imageOverlay = document.getElementById('imageOverlay');
-const closeImageBtn = document.getElementById('closeImageBtn');
-
-showImageBtn.addEventListener('click', function(e) {
-    e.stopPropagation();
-    imageOverlay.classList.add('active');
-    document.body.style.overflow = 'hidden'; // Prevent scrolling when overlay is open
-});
-
-function closeImageOverlay() {
-    imageOverlay.classList.remove('active');
-    document.body.style.overflow = ''; // Restore scrolling
-}
-
-closeImageBtn.addEventListener('click', closeImageOverlay);
-
-imageOverlay.addEventListener('click', function(e) {
-    if (e.target === imageOverlay) {
-        closeImageOverlay();
-    }
-});
-
-// Close overlay with escape key
-document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape' && imageOverlay.classList.contains('active')) {
-        closeImageOverlay();
-    }
-});
-
-// Add this special angles map
-const specialAngles = {
-    0: {
-        sin: '0',
-        cos: '1',
-        tan: '0'
-    },
-    30: {
-        sin: '\\frac{1}{2}',
-        cos: '\\frac{\\sqrt{3}}{2}',
-        tan: '\\frac{\\sqrt{3}}{3}'
-    },
-    45: {
-        sin: '\\frac{\\sqrt{2}}{2}',
-        cos: '\\frac{\\sqrt{2}}{2}',
-        tan: '1'
-    },
-    60: {
-        sin: '\\frac{\\sqrt{3}}{2}',
-        cos: '\\frac{1}{2}',
-        tan: '\\sqrt{3}'
-    },
-    90: {
-        sin: '1',
-        cos: '0',
-        tan: 'undefined'
-    },
-    120: {
-        sin: '\\frac{\\sqrt{3}}{2}',
-        cos: '-\\frac{1}{2}',
-        tan: '-\\sqrt{3}'
-    },
-    135: {
-        sin: '\\frac{\\sqrt{2}}{2}',
-        cos: '-\\frac{\\sqrt{2}}{2}',
-        tan: '-1'
-    },
-    150: {
-        sin: '\\frac{1}{2}',
-        cos: '-\\frac{\\sqrt{3}}{2}',
-        tan: '-\\frac{\\sqrt{3}}{3}'
-    },
-    180: {
-        sin: '0',
-        cos: '-1',
-        tan: '0'
-    },
-    210: {
-        sin: '-\\frac{1}{2}',
-        cos: '-\\frac{\\sqrt{3}}{2}',
-        tan: '\\frac{\\sqrt{3}}{3}'
-    },
-    225: {
-        sin: '-\\frac{\\sqrt{2}}{2}',
-        cos: '-\\frac{\\sqrt{2}}{2}',
-        tan: '1'
-    },
-    240: {
-        sin: '-\\frac{\\sqrt{3}}{2}',
-        cos: '-\\frac{1}{2}',
-        tan: '\\sqrt{3}'
-    },
-    270: {
-        sin: '-1',
-        cos: '0',
-        tan: 'undefined'
-    },
-    300: {
-        sin: '-\\frac{\\sqrt{3}}{2}',
-        cos: '\\frac{1}{2}',
-        tan: '-\\sqrt{3}'
-    },
-    315: {
-        sin: '-\\frac{\\sqrt{2}}{2}',
-        cos: '\\frac{\\sqrt{2}}{2}',
-        tan: '-1'
-    },
-    330: {
-        sin: '-\\frac{1}{2}',
-        cos: '\\frac{\\sqrt{3}}{2}',
-        tan: '-\\frac{\\sqrt{3}}{3}'
-    },
-    360: {
-        sin: '0',
-        cos: '1',
-        tan: '0'
-    }
-};
-
-// Add this function right after the specialAngles object
-function findClosestSpecialAngle(angle) {
-    const specialAnglesArray = Object.keys(specialAngles).map(Number);
-    return specialAnglesArray.reduce((prev, curr) => {
-        return (Math.abs(curr - angle) < Math.abs(prev - angle) ? curr : prev);
-    });
-}
-
-// Update the updateValues function to properly handle LaTeX rendering
-function updateValues(angle) {
-    const radians = (angle * Math.PI) / 180;
-    const sin = Math.sin(radians);
-    const cos = Math.cos(radians);
-    const tan = Math.tan(radians);
-
-    // Update angle display based on selected unit
-    if (angleUnit.value === 'degrees') {
-        angleValue.textContent = `${angle.toFixed(1)}°`;
-    } else {
-        angleValue.textContent = `${radians.toFixed(3)} rad`;
-    }
-
-    sinValue.textContent = sin.toFixed(3);
-    cosValue.textContent = cos.toFixed(3);
-    tanValue.textContent = Math.abs(tan) > 100 ? '∞' : tan.toFixed(3);
-
-    // Check for special angles
-    const closestSpecialAngle = findClosestSpecialAngle(angle);
-    if (Math.abs(closestSpecialAngle - angle) <= 2) {
-        const exact = specialAngles[closestSpecialAngle];
-        sinExact.innerHTML = `= \\(${exact.sin}\\)`;
-        cosExact.innerHTML = `= \\(${exact.cos}\\)`;
-        tanExact.innerHTML = exact.tan === 'undefined' ? 
-            '= undefined' : 
-            `= \\(${exact.tan}\\)`;
-
-        // Render LaTeX
-        MathJax.typesetPromise([sinExact, cosExact, tanExact]).catch((err) => {
-            console.error('MathJax error:', err);
-        });
-    } else {
-        sinExact.textContent = '';
-        cosExact.textContent = '';
-        tanExact.textContent = '';
-    }
-}
-
-document.addEventListener('DOMContentLoaded', function() {
-    const canvas = document.getElementById('unitCircle');
-    const ctx = canvas.getContext('2d');
-    const angleInput = document.getElementById('angleSlider');
-    const angleUnit = document.getElementById('angleUnit');
-    const angleValue = document.getElementById('angleValue');
-    const sinValue = document.getElementById('sinValue');
-    const cosValue = document.getElementById('cosValue');
-    const tanValue = document.getElementById('tanValue');
-    const sinExact = document.getElementById('sinExact');
-    const cosExact = document.getElementById('cosExact');
-    const tanExact = document.getElementById('tanExact');
-
-    // Set canvas size
-    canvas.style.width = '300px';
-    canvas.style.height = '300px';
-    canvas.width = 300 * window.devicePixelRatio;
-    canvas.height = 300 * window.devicePixelRatio;
-    ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
-
-    const centerX = 150;
-    const centerY = 150;
-    const radius = 120;
-
-    let isDragging = false;
-
-    function drawUnitCircle(angle) {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-        // Draw coordinate axes
-        ctx.beginPath();
-        ctx.strokeStyle = '#94a3b8';
-        ctx.lineWidth = 1;
-        ctx.moveTo(0, centerY);
-        ctx.lineTo(300, centerY);
-        ctx.moveTo(centerX, 0);
-        ctx.lineTo(centerX, 300);
-        ctx.stroke();
-
-        // Draw circle
-        ctx.beginPath();
-        ctx.strokeStyle = '#64748b';
-        ctx.lineWidth = 2;
-        ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
-        ctx.stroke();
-
-        // Convert angle to radians
-        const radians = (angle * Math.PI) / 180;
-
-        // Calculate point on circle
-        const x = centerX + radius * Math.cos(radians);
-        const y = centerY - radius * Math.sin(radians);
-
-        // Draw angle arc
-        ctx.beginPath();
-        ctx.strokeStyle = '#93c5fd';
-        ctx.lineWidth = 2;
-        ctx.arc(centerX, centerY, 30, 0, -radians, true);
-        ctx.stroke();
-
-        // Draw radius line
-        ctx.beginPath();
-        ctx.strokeStyle = '#2563eb';
-        ctx.lineWidth = 2;
-        ctx.moveTo(centerX, centerY);
-        ctx.lineTo(x, y);
-        ctx.stroke();
-
-        // Draw point
-        ctx.beginPath();
-        ctx.fillStyle = '#2563eb';
-        ctx.arc(x, y, 6, 0, 2 * Math.PI);
-        ctx.fill();
-
-        // Draw sin line
-        ctx.beginPath();
-        ctx.strokeStyle = '#059669';
-        ctx.setLineDash([4, 4]);
-        ctx.moveTo(x, y);
-        ctx.lineTo(x, centerY);
-        ctx.stroke();
-        ctx.setLineDash([]);
-
-        // Draw cos line
-        ctx.beginPath();
-        ctx.strokeStyle = '#dc2626';
-        ctx.setLineDash([4, 4]);
-        ctx.moveTo(x, y);
-        ctx.lineTo(centerX, y);
-        ctx.stroke();
-        ctx.setLineDash([]);
-
-        updateValues(angle);
-    }
-
-    // Input event handler
-    angleInput.addEventListener('input', function() {
-        let value = parseFloat(this.value) || 0;
-        const unit = angleUnit.value;
-        
-        if (unit === 'degrees') {
-            value = value % 360;
-            if (value < 0) value += 360;
-            drawUnitCircle(value);
-        } else {
-            let degrees = (value * 180 / Math.PI) % 360;
-            if (degrees < 0) degrees += 360;
-            drawUnitCircle(degrees);
-        }
-    });
-
-    // Unit change handler
-    angleUnit.addEventListener('change', function() {
-        const currentValue = parseFloat(angleInput.value) || 0;
-        
-        if (this.value === 'radians') {
-            angleInput.value = ((currentValue * Math.PI) / 180).toFixed(3);
-            angleInput.step = '0.001';
-        } else {
-            angleInput.value = ((currentValue * 180) / Math.PI).toFixed(1);
-            angleInput.step = '0.1';
-        }
-        
-        const degrees = this.value === 'degrees' ? 
-            currentValue : 
-            (currentValue * 180 / Math.PI);
-        drawUnitCircle(degrees % 360);
-    });
-
-    // Add this function right after the drawUnitCircle function
-    function getAngleFromMouse(event) {
-        const rect = canvas.getBoundingClientRect();
-        const scaleX = canvas.width / rect.width;    // relationship bitmap vs. element for X
-        const scaleY = canvas.height / rect.height;  // relationship bitmap vs. element for Y
-
-        const x = (event.clientX - rect.left) * scaleX / window.devicePixelRatio - centerX;
-        const y = centerY - (event.clientY - rect.top) * scaleY / window.devicePixelRatio;
-        
-        let angle = Math.atan2(y, x) * 180 / Math.PI;
-        if (angle < 0) angle += 360;
-        return angle;
-    }
-
-    // Update the mouse event handlers
-    canvas.addEventListener('mousedown', function(event) {
-        isDragging = true;
-        const angle = getAngleFromMouse(event);
-        if (angleUnit.value === 'degrees') {
-            angleInput.value = angle.toFixed(1);
-        } else {
-            angleInput.value = ((angle * Math.PI) / 180).toFixed(3);
-        }
-        drawUnitCircle(angle);
-    });
-
-    canvas.addEventListener('mousemove', function(event) {
-        if (!isDragging) return;
-        const angle = getAngleFromMouse(event);
-        if (angleUnit.value === 'degrees') {
-            angleInput.value = angle.toFixed(1);
-        } else {
-            angleInput.value = ((angle * Math.PI) / 180).toFixed(3);
-        }
-        drawUnitCircle(angle);
-    });
-
-    // Add touch event handlers for mobile support
-    canvas.addEventListener('touchstart', function(event) {
-        event.preventDefault();
-        isDragging = true;
-        const touch = event.touches[0];
-        const angle = getAngleFromMouse(touch);
-        if (angleUnit.value === 'degrees') {
-            angleInput.value = angle.toFixed(1);
-        } else {
-            angleInput.value = ((angle * Math.PI) / 180).toFixed(3);
-        }
-        drawUnitCircle(angle);
-    });
-
-    canvas.addEventListener('touchmove', function(event) {
-        event.preventDefault();
-        if (!isDragging) return;
-        const touch = event.touches[0];
-        const angle = getAngleFromMouse(touch);
-        if (angleUnit.value === 'degrees') {
-            angleInput.value = angle.toFixed(1);
-        } else {
-            angleInput.value = ((angle * Math.PI) / 180).toFixed(3);
-        }
-        drawUnitCircle(angle);
-    });
-
-    canvas.addEventListener('touchend', () => isDragging = false);
-    canvas.addEventListener('touchcancel', () => isDragging = false);
-
-    // Initial draw
-    drawUnitCircle(0);
-});
-    </script>
+    <script src="main.js"></script>
 </body>
 </html>
