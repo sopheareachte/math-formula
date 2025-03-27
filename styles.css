@@ -425,7 +425,6 @@ main.container {
 /* Responsive formula grid */
 .formula-grid {
   display: grid;
-  max-width: 450px;
   grid-template-columns: repeat(3, 1fr);
   gap: 1.5rem;
   padding: 1rem;

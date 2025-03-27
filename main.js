@@ -7,29 +7,92 @@ const formulas = [
     category: "Precalculus - Algebra",
     title: "Quadratic Formula",
     formula: "\\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}",
-    sectionId: "algebra"
+    sectionId: "quadratic"
   },
   {
     category: "Precalculus - Algebra",
-    title: "Binomial Theorem",
-    formula: "(a+b)^n = \\sum_{k=0}^{n} \\binom{n}{k} a^{n-k} b^k",
-    sectionId: "algebra"
+    title: "Special Factoring Properties",
+    formula: [
+      "x^2-y^2=(x+y)(x-y)",
+      "x^2-y^2=(x+y)(x-y)",
+      "x^2-2xy+y^2=(x-y)^2",
+      "x^3-y^3=(x-y)(x^2+xy+y^2)",
+      "x^3+y^3=(x+y)(x^2-xy+y^2)",
+    ],
+    sectionId: "special-factoring"
   },
   {
     category: "Precalculus - Algebra",
     title: "Logarithm Properties",
     formula: [
-      "\\log_b(mn) = \\log_b(m) + \\log_b(n)",
-      "\\log_b\\left(\\frac{m}{n}\\right) = \\log_b(m) - \\log_b(n)",
-      "\\log_b(m^p) = p \\log_b(m)",
+      "y=\log_a(x) => a^y = x",
+      "\log_a(xy) = \log_a(x) + \log_a(y)",
+      "\log_a(\\frac{x}{y}) = \log_a(x) - \log_a(y)",
+      "\log_a(x^r) = r \log_a(x)",
+      "a^{\log_a(x)}  = x",
+      "\log_a(a^x) = x",
+      "\log_a(1) = 0",
+      "\log_a(a) = 1",
+      "\log(x) = \log_{10}(x)",
+      "\ln(x) = \log_e(x)",
+      "\log_b(u) = \\frac{\log_a(u)}{\log_a(b)} ",
     ],
-    sectionId: "algebra"
+    sectionId: "logarithm"
+  },
+  {
+    category: "Precalculus - Algebra",
+    title: "Radical Properties:",
+    formula: [
+      "a^ma^n=a^{m+n} ",
+      "(a^m)^n=a^{mn}",
+      "(ab)^n=a^{n}b^n",
+      "(\\frac{a}{b})^n=\\frac{a^n}{b^n}",
+      "\\frac{a^m}{a^n}=a^{m-n}",
+      "a^{-n}=\\frac{1}{a^n}",
+      "a^{\\frac{1}{n}}=\\sqrt[n]{a}",
+      "a^{\\frac{m}{n}}=\\sqrt[n]{a^m}",
+      "a^{\\frac{m}{n}}=(\\sqrt[n]{a})^m",
+      "\\sqrt[n]{ab}=\\sqrt[n]a\\sqrt[n]b",
+      "\\sqrt[n]{\\frac{a}{b}}=\\frac{\\sqrt[n]a}{\\sqrt[n]b}",
+      "\\sqrt[m]{\\sqrt[n]{a}}=\\sqrt[mn]a",
+    ],
+    sectionId: "radical"
+  },
+  {
+    category: "Precalculus - Trigonometry",
+    title: "Right Triangles",
+    formula: [
+      "\\sin (\\theta) = \\frac{opp}{hyp}, \\csc (\\theta) = \\frac{hyp}{opp}",
+      "\\cos (\\theta) = \\frac{adj}{hyp}, \\sec (\\theta) = \\frac{hyp}{adj}",
+      "\\tan (\\theta) = \\frac{opp}{adj}, \\cot (\\theta) = \\frac{adj}{opp}",
+    ],
+    sectionId: "right"
+  },
+  {
+    category: "Precalculus - Trigonometry",
+    title: "The Law of Sines",
+    formula: "\\frac{a}{\sin A}=\\frac{b}{\sin B}=\\frac{c}{\sin C}",
+    sectionId: "lawsine"
+  },
+  {
+    category: "Precalculus - Trigonometry",
+    title: "The Law of Cosines",
+    formula: [
+      "a^2=b^2+c^2-2bc \cos A",
+      "b^2=a^2+c^2-2ac \cos B",
+      "c^2=a^2+b^2-2ab \cos C",
+    ],
+    sectionId: "lawcosine"
   },
   {
     category: "Precalculus - Trigonometry",
     title: "Pythagorean Identity",
-    formula: "\\sin^2(\\theta) + \\cos^2(\\theta) = 1",
-    sectionId: "trigonometry"
+    formula: [
+      "\sin^2(x) + \cos^2(x) = 1",
+      "1+\tan^2(x) = \sec^2(x)",
+      "1+\cot^2(x) + \csc^2(x)",
+    ],
+    sectionId: "pythagorean"
   },
   {
     category: "Precalculus - Trigonometry",
@@ -38,16 +101,27 @@ const formulas = [
       "\\sin(a \\pm b) = \\sin(a)\\cos(b) \\pm \\cos(a)\\sin(b)",
       "\\cos(a \\pm b) = \\cos(a)\\cos(b) \\mp \\sin(a)\\sin(b)",
     ],
-    sectionId: "trigonometry"
+    sectionId: "diff"
   },
   {
     category: "Precalculus - Trigonometry",
     title: "Double Angle Formulas",
     formula: [
-      "\\sin(2\\theta) = 2\\sin(\\theta)\\cos(\\theta)",
-      "\\cos(2\\theta) = \\cos^2(\\theta) - \\sin^2(\\theta)",
+      "\\sin(2x) = 2\\sin(x)\\cos(x)",
+      "\\cos(2x) = \\cos^2(x) - \\sin^2(x)",
     ],
-    sectionId: "trigonometry"
+    sectionId: "double"
+  },
+  {
+    category: "Precalculus - Trigonometry",
+    title: "Trigonometric Identities",
+    formula: [
+      "\sin(x)\csc(x)=1",
+      "\cos(x)\sec(x)=1",
+      "\tan(x)\cot(x)=1",
+      "\tan(x)=\\frac{\sin(x)}{\cos(x)}\), \(\cot(x)=\\frac{\cos(x)}{\sin(x)}",
+    ],
+    sectionId: "iden"
   },
   {
     category: "Precalculus - Trigonometry",
@@ -55,49 +129,196 @@ const formulas = [
     formula: [
       "\\sin(\\theta), \\cos(\\theta), \\tan(\\theta)",
     ],
-    sectionId: "trigonometry"
+    sectionId: "interactive"
   },
   {
-    category: "Precalculus - Analytic Geometry",
+    category: "Precalculus - Geometry",
+    title: "Pythagorean Theorem:",
+    formula: "c^2 = a^2 + b^2",
+    sectionId: "pytheorem"
+  },
+  {
+    category: "Precalculus - Geometry",
+    title: "Square",
+    formula: [
+      "A = s^2",
+      "C=4s",
+    ],
+    sectionId: "square"
+  },
+  {
+    category: "Precalculus - Geometry",
+    title: "Rectangle",
+    formula: [
+      "A = lw",
+      "C=2l+2w",
+    ],
+    sectionId: "rect"
+  },
+  {
+    category: "Precalculus - Geometry",
+    title: "Triangle",
+    formula: [
+      "A = \\frac{1}{2}bh",
+      "C=a+b+c",
+    ],
+    sectionId: "triangle"
+  },
+  {
+    category: "Precalculus - Geometry",
+    title: "Circle",
+    formula: [
+      "A = \\pi r^2",
+      "C=2\\pi r",
+    ],
+    sectionId: "circle"
+  },
+  {
+    category: "Precalculus - Geometry",
+    title: "Cube",
+    formula: [
+      "V = s^3",
+      "S=6s^2",
+    ],
+    sectionId: "cube"
+  },
+  {
+    category: "Precalculus - Geometry",
+    title: "Rectangle Prism",
+    formula: [
+      "V = lwh",
+      "S=2(lw+wh+hl)",
+    ],
+    sectionId: "prism"
+  },
+  {
+    category: "Precalculus - Geometry",
+    title: "Cone",
+    formula: [
+      "V = \\frac{1}{3}\\pi r^2 h",
+      "S=\\pi r(r+\\sqrt{h^2+ r^2})",
+    ],
+    sectionId: "cone"
+  },
+  {
+    category: "Precalculus - Geometry",
+    title: "Sphere",
+    formula: [
+      "V = \\frac{4}{3}\\pi r^3",
+      "S=4\\pi r^2",
+    ],
+    sectionId: "sphere"
+  },
+  {
+    category: "Precalculus - Geometry",
     title: "Distance Formula",
     formula: "\\sqrt{(x_2 - x_1)^2 + (y_2 - y_1)^2}",
-    sectionId: "analytic-geometry"
+    sectionId: "distancef"
   },
   {
-    category: "Precalculus - Analytic Geometry",
+    category: "Precalculus - Geometry",
     title: "Equation of a Circle",
     formula: "(x - h)^2 + (y - k)^2 = r^2",
-    sectionId: "analytic-geometry"
+    sectionId: "eqcir"
   },
   {
-    category: "Precalculus - Analytic Geometry",
-    title: "Equation of a Line",
+    category: "Precalculus - Geometry",
+    title: "Slope-intercept form of a Line",
     formula: "y = mx + b",
-    sectionId: "analytic-geometry"
+    sectionId: "slopein"
+  },
+  {
+    category: "Precalculus - Geometry",
+    title: "Point-slope form of a Line",
+    formula: "y - y_1 = m(x - x_1)",
+    sectionId: "pslope"
+  },
+  {
+    category: "Calculus - Limit",
+    title: "Limit Definition",
+    formula: [
+      "\\begin{gather*}lim_{x\\to a^-}{f(x)}= lim_{x\\to a^+}{f(x)}=L\\\\ lim_{x\\to a}{f(x)}=L\\end{gather*}",
+      "\\begin{gather*}if\\hspace{0.3cm}lim_{x\\to a^-}{f(x)}\\neq lim_{x\\to a^+}{f(x)}\\\\lim_{x\\to a}{f(x)}=undefined\\end{gather*}",
+    ],
+    sectionId: "limitdif"
+  },
+  {
+    category: "Calculus - Limit",
+    title: "Sum Rule",
+    formula: "\\begin{equation}{\\small lim_{x\\to a}{f(x)+g(x)}=lim_{x\\to a}f(x)+lim_{x\\to a}g(x)}\\end{equation}",
+    sectionId: "limsum"
+  },
+  {
+    category: "Calculus - Limit",
+    title: "Difference Rule",
+    formula: "\\begin{equation}{\\small lim_{x\\to a}{f(x)-g(x)}=lim_{x\\to a}f(x)-lim_{x\\to a}g(x)}\\end{equation}",
+    sectionId: "limdiff"
+  },
+  {
+    category: "Calculus - Limit",
+    title: "Product Rule",
+    formula: "\\begin{equation}{\\small lim_{x\\to a}{f(x).g(x)}=lim_{x\\to a}f(x).lim_{x\\to a}g(x)}\\end{equation}",
+    sectionId: "limpro"
+  },
+  {
+    category: "Calculus - Limit",
+    title: "Quotient Rule",
+    formula: "lim_{x\\to a}{\\frac{f(x)}{g(x)}}=\\frac{lim_{x\\to a}f(x)}{lim_{x\\to a}g(x)}",
+    sectionId: "limquo"
+  },
+  {
+    category: "Calculus - Limit",
+    title: "Ways to Solve Limit",
+    formula: [
+      "1.Direct Substitution",
+      "2. Factoring",
+      "3. Rationalizing",
+      "4. L'Hopital's Rule",
+      "5. Squeeze Theorem",
+      "6. Dominant Term for Infinity Limits",
+      "7. Trigonometric Limits",
+      "8. Logarithmic and Exponential Limits",
+      "9. Change of Variables",
+      "10. Limits at Infinity: Horizontal Asymptotes",
+      "11. Limits with Piecewise Functions",
+    ],
+    sectionId: "limway"
+  },
+  {
+    category: "Calculus - Derivatives",
+    title: "Basic Rule",
+    formula: [
+      "\\frac{d}{dx}(c) = 0",
+      "\\frac{d}{dx}(x) = 1",
+      "\\frac{d}{dx}(cf(x)) = c\\frac{d}{dx}(f(x))",
+      "\\begin{gather}\\frac{d}{dx}(f(x)+g(x)) \\\\= f'(x)+g'(x)\\end{gather}",
+      "\\begin{gather}\\frac{d}{dx}(f(x)-g(x)) \\\\= f'(x)-g'(x)\\end{gather}",
+    ],
+    sectionId: "basicdev"
   },
   {
     category: "Calculus - Derivatives",
     title: "Power Rule",
     formula: "\\frac{d}{dx}(x^n) = nx^{n-1}",
-    sectionId: "derivatives"
+    sectionId: "powdev"
   },
   {
     category: "Calculus - Derivatives",
     title: "Product Rule",
-    formula: "\\frac{d}{dx}(uv) = u\\frac{dv}{dx} + v\\frac{du}{dx}",
-    sectionId: "derivatives"
+    formula: "\\begin{gather}\\frac{d}{dx}(f(x).g(x)) \\\\= f'(x)g(x)+f(x)g'(x)\\end{gather}",
+    sectionId: "prodev"
   },
   {
     category: "Calculus - Derivatives",
     title: "Quotient Rule",
-    formula: "\\frac{d}{dx}\\left(\\frac{u}{v}\\right) = \\frac{v\\frac{du}{dx} - u\\frac{dv}{dx}}{v^2}",
-    sectionId: "derivatives"
+    formula: "\\begin{gather}\\frac{d}{dx}(\\frac{f(x)}{g(x)}) \\\\= \\frac{f'(x)g(x)-f(x)g'(x)}{(g(x))^2}\\end{gather}",
+    sectionId: "quodev"
   },
   {
     category: "Calculus - Derivatives",
     title: "Chain Rule",
     formula: "\\frac{d}{dx}(f(g(x))) = f'(g(x))g'(x)",
-    sectionId: "derivatives"
+    sectionId: "chaindev"
   },
   {
     category: "Calculus - Derivatives",
@@ -105,8 +326,32 @@ const formulas = [
     formula: [
       "\\frac{d}{dx}(\\sin x) = \\cos x",
       "\\frac{d}{dx}(\\cos x) = -\\sin x",
+      "\\frac{d}{dx}(\\tan x) = \\sec^2 x",
+      "\\frac{d}{dx}(\\cot x) = -\\csc^2 x",
+      "\\frac{d}{dx}(\\sec x) = \\sec x\\tan x",
+      "\\frac{d}{dx}(\\csc x) = -\\csc x\\cot x",
     ],
-    sectionId: "derivatives"
+    sectionId: "trigdev"
+  },
+  {
+    category: "Calculus - Derivatives",
+    title: "Exponential Rule",
+    formula: [
+      "\\frac{d}{dx}(e^x)=e^x",
+      "\\frac{d}{dx}(e^{f(x)})=e^{f(x)}.f'(x)",
+    ],
+    sectionId: "expdev"
+  },
+  {
+    category: "Calculus - Derivatives",
+    title: "Logarithm Rule",
+    formula: [
+      "\\frac{d}{dx}(\\ln(x))=\\frac{1}{x}x",
+      "\\frac{d}{dx}(\\ln{f(x)})=\\frac{1}{f(x)}f'(x)",
+      "\\frac{d}{dx}(\\log_a(x))=\\frac{1}{x\\ln(a)}",
+      "\\frac{d}{dx}(\\log_a{f(x)})=\\frac{1}{f(x)\\ln(a)}f'(x)",
+    ],
+    sectionId: "logdev"
   },
   {
     category: "Calculus - Integrals",
@@ -140,36 +385,6 @@ const formulas = [
       "\\int \\cos x dx = \\sin x + C",
     ],
     sectionId: "integrals"
-  },
-  {
-    category: "Calculus - Series and Sequences",
-    title: "Arithmetic Sequence",
-    formula: "a_n = a_1 + (n-1)d",
-    sectionId: "series"
-  },
-  {
-    category: "Calculus - Series and Sequences",
-    title: "Geometric Sequence",
-    formula: "a_n = a_1 r^{n-1}",
-    sectionId: "series"
-  },
-  {
-    category: "Calculus - Series and Sequences",
-    title: "Sum of an Arithmetic Series",
-    formula: "S_n = \\frac{n}{2}(a_1 + a_n)",
-    sectionId: "series"
-  },
-  {
-    category: "Calculus - Series and Sequences",
-    title: "Sum of a Geometric Series",
-    formula: "S_n = \\frac{a_1(1 - r^n)}{1 - r}",
-    sectionId: "series"
-  },
-  {
-    category: "Calculus - Series and Sequences",
-    title: "Taylor Series",
-    formula: "f(x) = \\sum_{n=0}^{\\infty} \\frac{f^{(n)}(a)}{n!}(x-a)^n",
-    sectionId: "series"
   },
 ];
 
