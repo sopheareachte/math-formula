@@ -1,8 +1,3 @@
-import smoothscrollPolyfill from 'smoothscroll-polyfill';
-
-// Kick off the polyfill
-smoothscrollPolyfill.polyfill();
-
 const searchInput = document.getElementById('search-input');
 const searchResultsContainer = document.getElementById('search-results-container');
 const searchResultsList = document.getElementById('search-results');
@@ -466,24 +461,20 @@ searchResultsList.addEventListener('click', function(event) {
   if (sectionId) {
     const targetElement = document.getElementById(sectionId);
     if (targetElement) {
-      // Calculate header height for offset
-      const headerHeight = document.querySelector('.site-header').offsetHeight;
-
-      // Get the element's position
-      const elementPosition = targetElement.getBoundingClientRect().top;
-      const offsetPosition = elementPosition + window.pageYOffset - headerHeight - 20; // Added 20px padding
-
-      // Smooth scroll to element
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: 'smooth'
+      // Smooth scroll to the element
+      targetElement.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start' // Align the element to the top of the viewport
       });
 
-      // Highlight the target element temporarily
-      targetElement.classList.add('highlight-target');
-      setTimeout(() => {
-        targetElement.classList.remove('highlight-target');
-      }, 2000);
+      // Adjust the scroll position immediately after with smooth scroll
+      const headerHeight = document.querySelector('.site-header').offsetHeight;
+      const offsetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - headerHeight - 20;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth' // Smooth scroll to the adjusted position
+      });
     }
 
     // Clear search
@@ -492,6 +483,8 @@ searchResultsList.addEventListener('click', function(event) {
     searchResultsList.innerHTML = '';
   }
 });
+
+
 
 // Get references to DOM elements
 const menuToggle = document.getElementById('menuToggle');
