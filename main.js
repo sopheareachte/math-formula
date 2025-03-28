@@ -1,3 +1,8 @@
+import smoothscrollPolyfill from 'smoothscroll-polyfill';
+
+// Kick off the polyfill
+smoothscrollPolyfill.polyfill();
+
 const searchInput = document.getElementById('search-input');
 const searchResultsContainer = document.getElementById('search-results-container');
 const searchResultsList = document.getElementById('search-results');
