@@ -461,20 +461,24 @@ searchResultsList.addEventListener('click', function(event) {
   if (sectionId) {
     const targetElement = document.getElementById(sectionId);
     if (targetElement) {
-      // Smooth scroll to the element
-      targetElement.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start' // Align the element to the top of the viewport
-      });
-
-      // Adjust the scroll position immediately after with smooth scroll
+      // Calculate header height for offset
       const headerHeight = document.querySelector('.site-header').offsetHeight;
-      const offsetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - headerHeight - 20;
 
+      // Get the element's position
+      const elementPosition = targetElement.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - headerHeight - 20; // Added 20px padding
+
+      // Smooth scroll to element
       window.scrollTo({
         top: offsetPosition,
-        behavior: 'smooth' // Smooth scroll to the adjusted position
+        behavior: 'smooth'
       });
+
+      // Highlight the target element temporarily
+      targetElement.classList.add('highlight-target');
+      setTimeout(() => {
+        targetElement.classList.remove('highlight-target');
+      }, 2000);
     }
 
     // Clear search
@@ -483,8 +487,6 @@ searchResultsList.addEventListener('click', function(event) {
     searchResultsList.innerHTML = '';
   }
 });
-
-
 
 // Get references to DOM elements
 const menuToggle = document.getElementById('menuToggle');
