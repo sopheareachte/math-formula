@@ -488,12 +488,7 @@ searchResultsList.addEventListener('touchend', function(event) {
   }
 });
 
-searchResultsList.addEventListener('touchstart', function(event) {
-  const listItem = event.target.closest('li');
-  if (listItem) {
-    event.preventDefault();
-  }
-});
+
 
 // Get references to DOM elements
 const menuToggle = document.getElementById('menuToggle');
