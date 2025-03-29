@@ -453,7 +453,7 @@ function highlightMatch(text, matches) {
 }
 
 // Update the click handler for search results
-searchResultsList.addEventListener('click', function(event) {
+searchResultsList.addEventListener('touchstart', function(event) {
   const listItem = event.target.closest('li'); // Use closest to ensure we get the li element
   if (!listItem) return;
 
@@ -488,12 +488,7 @@ searchResultsList.addEventListener('click', function(event) {
   }
 });
 
-searchResultsList.addEventListener('touchstart', function(event) {
-  const listItem = event.target.closest('li');
-  if (listItem) {
-    event.preventDefault();
-  }
-});
+
 
 // Get references to DOM elements
 const menuToggle = document.getElementById('menuToggle');
