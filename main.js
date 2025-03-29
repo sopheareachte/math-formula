@@ -453,38 +453,41 @@ function highlightMatch(text, matches) {
 }
 
 // Update the click handler for search results
-searchResultsList.addEventListener('touchend', function(event) {
+searchResultsList.addEventListener('click', function(event) {
   const listItem = event.target.closest('li'); // Use closest to ensure we get the li element
   if (!listItem) return;
 
   const sectionId = listItem.getAttribute('data-section-id');
   if (sectionId) {
-    const targetElement = document.getElementById(sectionId);
-    if (targetElement) {
-      // Calculate header height for offset
-      const headerHeight = document.querySelector('.site-header').offsetHeight;
+    setTimeout(() =>{
+      const targetElement = document.getElementById(sectionId);
+      if (targetElement) {
+        // Calculate header height for offset
+        const headerHeight = document.querySelector('.site-header').offsetHeight;
 
-      // Get the element's position
-      const elementPosition = targetElement.getBoundingClientRect().top;
-      const offsetPosition = elementPosition + window.pageYOffset - headerHeight - 20; // Added 20px padding
+        // Get the element's position
+        const elementPosition = targetElement.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.pageYOffset - headerHeight - 20; // Added 20px padding
 
-      // Smooth scroll to element
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: 'smooth'
-      });
+        // Smooth scroll to element
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: 'smooth'
+        });
 
-      // Highlight the target element temporarily
-      targetElement.classList.add('highlight-target');
-      setTimeout(() => {
-        targetElement.classList.remove('highlight-target');
-      }, 2000);
-    }
+        // Highlight the target element temporarily
+        targetElement.classList.add('highlight-target');
+        setTimeout(() => {
+          targetElement.classList.remove('highlight-target');
+        }, 2000);
+      }
 
-    // Clear search
-    searchInput.value = '';
-    searchResultsContainer.style.display = 'none';
-    searchResultsList.innerHTML = '';
+      // Clear search
+      searchInput.value = '';
+      searchResultsContainer.style.display = 'none';
+      searchResultsList.innerHTML = '';
+    },500);
+
   }
 });
 
