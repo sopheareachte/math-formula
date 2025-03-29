@@ -486,7 +486,7 @@ searchResultsList.addEventListener('click', function(event) {
       searchInput.value = '';
       searchResultsContainer.style.display = 'none';
       searchResultsList.innerHTML = '';
-    },500);
+    },50);
 
   }
 });
