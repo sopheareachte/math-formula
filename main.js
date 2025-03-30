@@ -807,11 +807,11 @@ document.addEventListener('DOMContentLoaded', function() {
       const closestSpecialAngle = findClosestSpecialAngle(angle);
       if (Math.abs(closestSpecialAngle - angle) <= 2) {
         const exact = specialAngles[closestSpecialAngle];
-        sinExact.innerHTML = `= \\(${exact.sin}\\)`;
-        cosExact.innerHTML = `= \\(${exact.cos}\\)`;
+        sinExact.innerHTML = `\\(\\approx${exact.sin}\\)`;
+        cosExact.innerHTML = `\\(\\approx${exact.cos}\\)`;
         tanExact.innerHTML = exact.tan === 'undefined' ?
         '= undefined' :
-        `= \\(${exact.tan}\\)`;
+        `\\(\\approx${exact.tan}\\)`;
 
         // Render LaTeX
         MathJax.typesetPromise([sinExact, cosExact, tanExact]).catch((err) => {
