@@ -595,68 +595,6 @@ window.addEventListener('resize', () => {
   }
 });
 
-document.addEventListener('DOMContentLoaded', function() {
-  // Get the visitor count element
-  const visitorCountElement = document.getElementById('visitorCount');
-
-  // If the element doesn't exist, exit early
-  if (!visitorCountElement) {
-    console.error('Visitor count element not found');
-    return;
-  }
-
-  // Create a unique namespace specific to your site
-  const namespace = 'sopheareachte.github.iomath-formula';
-  const key = 'visits';
-
-  // Check if this user has visited before
-  let hasVisited = localStorage.getItem('hasVisited');
-
-  if (!hasVisited) {
-    // First visit - increment the counter
-    fetch(`https://api.countapi.xyz/hit/${namespace}/${key}`)
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(`CountAPI returned ${response.status}`);
-        }
-        return response.json();
-      })
-      .then(data => {
-        console.log('Counter updated:', data);
-        visitorCountElement.textContent = data.value.toLocaleString();
-        localStorage.setItem('hasVisited', 'true');
-      })
-      .catch(error => {
-        console.error('Error updating visitor count:', error);
-        visitorCountElement.textContent = 'Error';
-
-        // Fallback to get request if hit fails
-        fallbackGetCount(visitorCountElement, namespace, key);
-      });
-    } else {
-      // Returning visitor - just get the current count
-      fallbackGetCount(visitorCountElement, namespace, key);
-    }
-
-    function fallbackGetCount(element, ns, k) {
-      fetch(`https://api.countapi.xyz/get/${ns}/${k}`)
-        .then(response => {
-          if (!response.ok) {
-            throw new Error(`CountAPI returned ${response.status}`);
-          }
-          return response.json();
-        })
-        .then(data => {
-          console.log('Counter retrieved:', data);
-          element.textContent = data.value.toLocaleString();
-        })
-        .catch(error => {
-          console.error('Error fetching visitor count:', error);
-          element.textContent = 'Error';
-        });
-      }
-    });
-
     // Image overlay functionality
     const showImageBtn = document.getElementById('showImageBtn');
     const imageOverlay = document.getElementById('imageOverlay');
