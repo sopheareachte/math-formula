@@ -120,7 +120,7 @@
         <main class="container">
             <section id="precalculus" class="mb-8">
                 <h2 class="section-title">Precalculus Formulas</h2>
-                <div class="formula-grid">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
                     <div class="formula-card">
                         <h3 id="algebra" class="text-lg font-semibold text-blue-600 mb-4">Algebra</h3>
                         <ul class="space-y-4">
@@ -312,7 +312,7 @@
 
             <section id="calculus" class="mb-8">
                 <h2 class="section-title green">Calculus Formulas</h2>
-                <div class="formula-grid">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
                     <div class="formula-card">
                         <h3 id="limit" class="text-lg font-semibold text-green-600 mb-4">Limit</h3>
                         <ul class="space-y-4">
@@ -437,8 +437,8 @@
                                 <div class="formula">\(\frac{d}{dx}(c) = 0\)</div>
                                 <div class="formula">\(\frac{d}{dx}(x) = 1\)</div>
                                 <div class="formula">\(\frac{d}{dx}(cf(x)) = c\frac{d}{dx}(f(x))\)</div>
-                                <div class="formula">\begin{gather}\frac{d}{dx}(f(x)+g(x)) \\= f'(x)+g'(x)\end{gather}</div>
-                                <div class="formula">\begin{gather}\frac{d}{dx}(f(x)-g(x)) \\= f'(x)-g'(x)\end{gather}</div>
+                                <div class="formula">\(\frac{d}{dx}(f(x)+g(x)) \\= f'(x)+g'(x)\)</div>
+                                <div class="formula">\(\frac{d}{dx}(f(x)-g(x)) \\= f'(x)-g'(x)\)</div>
                             </li>
                             <li>
                                 <div id="powdev" class="formula-title text-gray-700 font-medium mb-2">Power Rule:</div>
@@ -446,11 +446,11 @@
                             </li>
                             <li>
                                 <div id="prodev" class="formula-title text-gray-700 font-medium mb-2">Product Rule:</div>
-                                <div class="formula">\begin{gather}\frac{d}{dx}(f(x).g(x)) \\= f'(x)g(x)+f(x)g'(x)\end{gather}</div>
+                                <div class="formula">\(\frac{d}{dx}(f(x).g(x)) \\= f'(x)g(x)+f(x)g'(x)\)</div>
                             </li>
                             <li>
                                 <div id="quodev" class="formula-title text-gray-700 font-medium mb-2">Quotient Rule:</div>
-                                <div class="formula">\begin{gather}\frac{d}{dx}(\frac{f(x)}{g(x)}) \\= \frac{f'(x)g(x)-f(x)g'(x)}{(g(x))^2}\end{gather}</div>
+                                <div class="formula">\(\frac{d}{dx}(\frac{f(x)}{g(x)}) \\= \frac{f'(x)g(x)-f(x)g'(x)}{(g(x))^2}\)</div>
                             </li>
                             <li>
                                 <div id="chaindev" class="formula-title text-gray-700 font-medium mb-2">Chain Rule:</div>
@@ -476,6 +476,24 @@
                                 <div class="formula">\(\frac{d}{dx}(\ln{f(x)})=\frac{1}{f(x)}f'(x)\)</div>
                                 <div class="formula">\(\frac{d}{dx}(\log_a(x))=\frac{1}{x\ln(a)}\)</div>
                                 <div class="formula">\(\frac{d}{dx}(\log_a{f(x)})=\frac{1}{f(x)\ln(a)}f'(x)\)</div>
+                            </li>
+                            <li>
+                                <div id="intrigdev" class="formula-title text-gray-700 font-medium mb-2">Derivatives of Inverse Trigonometric Functions:</div>
+                                <div class="formula">\(\frac{d}{dx}(\sin^{-1} (u)) = \frac{u'}{\sqrt{1-u^2}}\)</div>
+                                <div class="formula">\(\frac{d}{dx}(\cos^{-1} (u)) = \frac{-u'}{\sqrt{1-u^2}}\)</div>
+                                <div class="formula">\(\frac{d}{dx}(\tan^{-1} (u)) = \frac{u'}{1+u^2}\)</div>
+                                <div class="formula">\(\frac{d}{dx}(\cot^{-1} (u)) = \frac{-u'}{1+u^2}\)</div>
+                                <div class="formula">\(\frac{d}{dx}(\sec^{-1} (u)) = \frac{u'}{|u|\sqrt{u^2 -1}}\)</div>
+                                <div class="formula">\(\frac{d}{dx}(\csc^{-1} (u)) = \frac{-u'}{|u|\sqrt{u^2 -1}}\)</div>
+                            </li>
+                            <li>
+                                <div id="hypdev" class="formula-title text-gray-700 font-medium mb-2">Derivatives of Hyperbolic Functions:</div>
+                                <div class="formula">\(\frac{d}{dx}(\sinh (x)) = \cosh (x)\)</div>
+                                <div class="formula">\(\frac{d}{dx}(\cosh (x)) = \sinh (x)\)</div>
+                                <div class="formula">\(\frac{d}{dx}(\tanh (x)) = \operatorname{sech^2}(x)\)</div>
+                                <div class="formula">\(\frac{d}{dx}(\coth (x)) = -\operatorname{csch^2}(x)\)</div>
+                                <div class="formula">\(\frac{d}{dx}(\operatorname{sech}(x)) \\= -\operatorname{sech}(x)\tanh(x)\)</div>
+                                <div class="formula">\(\frac{d}{dx}(\operatorname{csch}(x)) \\= -\operatorname{csch}(x)\coth(x)\)</div>
                             </li>
                         </ul>
                     </div>

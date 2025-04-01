@@ -291,8 +291,8 @@ const formulas = [
       "\\frac{d}{dx}(c) = 0",
       "\\frac{d}{dx}(x) = 1",
       "\\frac{d}{dx}(cf(x)) = c\\frac{d}{dx}(f(x))",
-      "\\begin{gather}\\frac{d}{dx}(f(x)+g(x)) \\\\= f'(x)+g'(x)\\end{gather}",
-      "\\begin{gather}\\frac{d}{dx}(f(x)-g(x)) \\\\= f'(x)-g'(x)\\end{gather}",
+      "\\frac{d}{dx}(f(x)+g(x)) = f'(x)+g'(x)",
+      "\\frac{d}{dx}(f(x)-g(x)) = f'(x)-g'(x)",
     ],
     sectionId: "basicdev"
   },
@@ -305,13 +305,13 @@ const formulas = [
   {
     category: "Calculus - Derivatives",
     title: "Product Rule",
-    formula: "\\begin{gather}\\frac{d}{dx}(f(x).g(x)) \\\\= f'(x)g(x)+f(x)g'(x)\\end{gather}",
+    formula: "\\frac{d}{dx}(f(x).g(x)) = f'(x)g(x)+f(x)g'(x)",
     sectionId: "prodev"
   },
   {
     category: "Calculus - Derivatives",
     title: "Quotient Rule",
-    formula: "\\begin{gather}\\frac{d}{dx}(\\frac{f(x)}{g(x)}) \\\\= \\frac{f'(x)g(x)-f(x)g'(x)}{(g(x))^2}\\end{gather}",
+    formula: "\\frac{d}{dx}(\\frac{f(x)}{g(x)}) = \\frac{f'(x)g(x)-f(x)g'(x)}{(g(x))^2}",
     sectionId: "quodev"
   },
   {
@@ -352,6 +352,32 @@ const formulas = [
       "\\frac{d}{dx}(\\log_a{f(x)})=\\frac{1}{f(x)\\ln(a)}f'(x)",
     ],
     sectionId: "logdev"
+  },
+  {
+    category: "Calculus - Derivatives",
+    title: "Derivatives of Inverse Trigonometric Functions",
+    formula: [
+      "\\frac{d}{dx}(\\sin^{-1} u) = \\frac{u'}{\\sqrt{1-u^2}}",
+      "\\frac{d}{dx}(\\cos^{-1} u) = \\frac{-u'}{\\sqrt{1-u^2}}",
+      "\\frac{d}{dx}(\\tan^{-1} u) = \\frac{u'}{1+u^2}",
+      "\\frac{d}{dx}(\\cot^{-1} u) = \\frac{-u'}{1+u^2}",
+      "\\frac{d}{dx}(\\sec^{-1} u) = \\frac{u'}{|u|\\sqrt{u^2 -1}}",
+      "\\frac{d}{dx}(\\csc^{-1} u) = \\frac{-u'}{|u|\\sqrt{u^2 -1}}",
+    ],
+    sectionId: "intrigdev"
+  },
+  {
+    category: "Calculus - Derivatives",
+    title: "Derivatives of Hyperbolic Functions",
+    formula: [
+      "\\frac{d}{dx}(\\sinh (x)) = \\cosh (x)",
+      "\\frac{d}{dx}(\\cosh (x)) = \\sinh (x)",
+      "\\frac{d}{dx}(\\tanh (x)) = \\operatorname{sech^2}(x)",
+      "\\frac{d}{dx}(\\coth (x)) = -\\operatorname{csch^2}(x)",
+      "\\frac{d}{dx}(\\operatorname{sech}(x)) = -\\operatorname{sech}(x)\\tanh(x)",
+      "\\frac{d}{dx}(\\operatorname{csch}(x)) = -\\operatorname{csch}(x)\\coth(x)",
+    ],
+    sectionId: "hypdev"
   },
   {
     category: "Calculus - Integrals",
