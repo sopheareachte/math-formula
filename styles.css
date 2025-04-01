@@ -101,8 +101,12 @@ body {
   box-shadow: 2px 0 8px rgba(0, 0, 0, 0.05);
   overflow-y: auto;
   z-index: 30;
-  padding-top: 60px;
+  padding-top: 80px;
+  transform: translateX(-100%);
   transition: transform 0.3s ease;
+}
+.sidebar.active {
+  transform: translateX(0);
 }
 .sidebar-menu {
   padding: 1rem;
@@ -167,6 +171,7 @@ body {
   margin-bottom: 2rem;
   position: relative;
   padding-bottom: 0.75rem;
+  scroll-margin-top: 100px;
 }
 .section-title::after {
   content: '';
@@ -229,7 +234,7 @@ body {
   }
 }
 .content-wrapper {
-  margin-left: 250px;
+  margin-left: 0;
   min-height: 100vh;
   padding-top: 40px;
   transition: margin-left 0.3s ease;
@@ -321,36 +326,18 @@ main.container {
   z-index: 25;
   opacity: 0;
   transition: opacity 0.3s ease;
-  pointer-events: none;
 }
 .sidebar-overlay.active {
+  display: block;
   opacity: 1;
-  pointer-events: auto;
 }
-/* Menu Toggle Button - Hidden on desktop */
 .menu-toggle {
-  display: none; /* Hidden by default */
+  display: block;
   padding: 0.5rem;
   background-color: transparent;
   border: none;
   cursor: pointer;
 }
-/* Updated Sidebar Styles */
-.sidebar {
-  width: 250px;
-  height: 100vh;
-  position: fixed;
-  left: 0;
-  top: 0;
-  background-color: white;
-  border-right: 1px solid #e2e8f0;
-  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.05);
-  overflow-y: auto;
-  z-index: 30;
-  padding-top: 80px;
-  transition: transform 0.3s ease;
-}
-/* Enhanced sidebar overlay */
 .sidebar-overlay {
   display: none;
   position: fixed;
@@ -363,51 +350,29 @@ main.container {
   opacity: 0;
   transition: opacity 0.3s ease;
 }
-/* Improved responsive behavior */
+.sidebar-overlay.active {
+  display: block;
+  opacity: 1;
+}
 @media (max-width: 1024px) {
-  .menu-toggle {
-    display: block;
-  }
-
-  .sidebar {
-    transform: translateX(-100%);
-    z-index: 50;
-    box-shadow: 4px 0 10px rgba(0, 0, 0, 0.1);
-  }
-
-  .sidebar.active {
-    transform: translateX(0);
-  }
-
   .container {
     margin: 0 auto;
   }
 
   .content-wrapper {
-    margin-left: 0; /* No margin on mobile/tablet */
     padding-top: 50px;
-  }
-
-  .sidebar-overlay {
-    display: block;
-  }
-
-  .sidebar-overlay.active {
-    opacity: 1;
   }
 
   body.sidebar-open {
     overflow: hidden;
   }
 }
-/* Further optimize for phone sizes */
 @media (max-width: 480px) {
   .sidebar {
-    width: 85%; /* Wider sidebar on very small screens */
+    width: 85%;
     max-width: 300px;
   }
 }
-/* Improved formula card styles with better responsiveness */
 .formula-card {
   background-color: white;
   border-radius: 1rem;
@@ -422,7 +387,6 @@ main.container {
   box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
 }
 
-/* Responsive formula grid */
 .formula-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -430,7 +394,6 @@ main.container {
   padding: 1rem;
 }
 
-/* Responsive adjustments */
 @media (max-width: 1280px) {
   .formula-grid {
     grid-template-columns: repeat(2, 1fr);
@@ -455,7 +418,6 @@ main.container {
   }
 }
 
-/* Phone-specific optimizations */
 @media (max-width: 640px) {
   .formula-card {
     padding: 1rem;
@@ -467,7 +429,7 @@ main.container {
   }
 
   .formula {
-    overflow-x: auto; /* Allow horizontal scrolling for long formulas */
+    overflow-x: auto;
     padding: 0.75rem;
     font-size: 0.9rem;
   }
@@ -483,7 +445,6 @@ main.container {
     padding-left: 0.5rem;
   }
 
-  /* Ensure content doesn't overflow the screen width */
   .container {
     width: 100%;
     padding: 0 0.5rem;
@@ -491,7 +452,6 @@ main.container {
   }
 }
 
-/* Make sure formulas don't overflow on very small screens */
 @media (max-width: 380px) {
   .formula-card {
     padding: 0.75rem;
@@ -503,7 +463,6 @@ main.container {
   }
 }
 
-/* Update header styles for search integration */
 .site-header {
   position: fixed;
   top: 0;
@@ -525,10 +484,8 @@ main.container {
   flex-wrap: wrap;
 }
 
-/* Responsive adjustments for the header and search */
 @media (max-width: 1024px) {
   .header-content {
-    /*justify-content: space-between;*/
   }
 
   .search-container {
@@ -576,14 +533,13 @@ main.container {
   }
 }
 
-/* Adjust content padding for fixed header */
 .content-wrapper {
   padding-top: 65px;
 }
 
 @media (max-width: 1024px) {
   .content-wrapper {
-    padding-top: 110px; /* Adjusted for two-row header */
+    padding-top: 110px;
   }
 }
 
@@ -602,7 +558,6 @@ main.container {
   }
 }
 
-/* Image Button Styles */
 .image-button {
   display: flex;
   align-items: center;
@@ -629,7 +584,6 @@ main.container {
   height: 1.25rem;
 }
 
-/* Image Overlay Styles */
 .image-overlay {
   position: fixed;
   top: 0;
@@ -691,7 +645,6 @@ main.container {
   transform: scale(1.1);
 }
 
-/* Responsive adjustments */
 @media (max-width: 640px) {
   .image-container {
     max-width: 95%;
@@ -712,7 +665,6 @@ main.container {
   }
 }
 
-/* Interactive Circle Styles */
 .interactive-circle-card {
   grid-column: 1 / -1;
   width: 100%;
@@ -832,4 +784,8 @@ main.container {
     max-width: 200px;
     margin: 0 auto;
   }
+}
+
+[id] {
+  scroll-margin-top: 100px;
 }

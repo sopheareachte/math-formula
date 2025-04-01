@@ -543,108 +543,56 @@ searchResultsList.addEventListener('click', function(event) {
   }
 });
 
+document.addEventListener('DOMContentLoaded', function() {
+    const menuToggle = document.getElementById('menuToggle');
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebarOverlay');
+    const body = document.body;
 
-
-// Get references to DOM elements
-const menuToggle = document.getElementById('menuToggle');
-const sidebar = document.getElementById('sidebar');
-const overlay = document.getElementById('sidebarOverlay');
-const body = document.body;
-
-// Only toggle menu when clicking the menu button
-menuToggle.addEventListener('click', function(e) {
-  e.stopPropagation();
-  toggleSidebar();
-});
-
-// Only close menu when clicking the active overlay
-overlay.addEventListener('click', function(e) {
-  e.stopPropagation();
-  if (sidebar.classList.contains('active')) {
-    toggleSidebar();
-  }
-});
-
-// Toggle sidebar function
-function toggleSidebar() {
-  sidebar.classList.toggle('active');
-  overlay.classList.toggle('active');
-  body.classList.toggle('sidebar-open');
-}
-
-// Fix search functionality
-searchInput.addEventListener('click', function(e) {
-  e.stopPropagation(); // Prevent event from reaching document
-});
-
-searchResultsContainer.addEventListener('click', function(e) {
-  e.stopPropagation(); // Prevent event from reaching document
-});
-
-// Fix sidebar initialization
-function initializeSidebar() {
-  if (window.innerWidth > 1024) {
-    // Desktop view
-    sidebar.classList.remove('active');
-    overlay.classList.remove('active');
-    overlay.style.display = 'none';
-    body.classList.remove('sidebar-open');
-  } else {
-    // Mobile view
-    if (!sidebar.classList.contains('active')) {
-      overlay.style.display = 'block';
-      overlay.classList.remove('active');
-    }
-  }
-}
-
-// Initialize on page load
-document.addEventListener('DOMContentLoaded', initializeSidebar);
-
-// Update on window resize
-window.addEventListener('resize', initializeSidebar);
-
-// FIXED: Ensure links work properly and close sidebar on mobile
-document.querySelectorAll('.sidebar-link').forEach(link => {
-  link.addEventListener('click', (e) => {
-    e.preventDefault();
-    e.stopPropagation(); // Prevent event bubbling
-
-    const targetId = link.getAttribute('href').substring(1);
-    const targetSection = document.getElementById(targetId);
-
-    if (targetSection) {
-      const headerOffset = 90;
-      const elementPosition = targetSection.getBoundingClientRect().top;
-      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: "smooth"
-      });
+    // Toggle sidebar
+    function toggleSidebar() {
+        sidebar.classList.toggle('active');
+        overlay.classList.toggle('active');
+        body.classList.toggle('sidebar-open');
     }
 
-    // Close sidebar on mobile
-    if (window.innerWidth <= 1024 && sidebar.classList.contains('active')) {
-      toggleSidebar();
-    }
-  });
-});
+    // Add click event listeners
+    menuToggle.addEventListener('click', toggleSidebar);
+    overlay.addEventListener('click', toggleSidebar);
 
-// Close sidebar with escape key
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape' && sidebar.classList.contains('active')) {
-    toggleSidebar();
-  }
-});
+    // Handle smooth scrolling with offset
+    const sidebarLinks = document.querySelectorAll('.sidebar-link');
+    sidebarLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault(); // Prevent default anchor behavior
+            
+            // Close sidebar
+            sidebar.classList.remove('active');
+            overlay.classList.remove('active');
+            body.classList.remove('sidebar-open');
 
-// FIXED: Ensure overlay is properly hidden on larger screens
-window.addEventListener('resize', () => {
-  if (window.innerWidth > 1024) {
-    sidebar.classList.remove('active');
-    overlay.classList.remove('active');
-    body.classList.remove('sidebar-open');
-  }
+            // Get the target element
+            const targetId = link.getAttribute('href');
+            const targetElement = document.querySelector(targetId);
+            
+            if (targetElement) {
+                // Calculate header height - adjust this value if your header height changes
+                const headerHeight = document.querySelector('.site-header').offsetHeight;
+                // Add extra padding if needed
+                const offset = headerHeight + 20; // 20px extra padding
+
+                // Calculate the final scroll position
+                const elementPosition = targetElement.getBoundingClientRect().top;
+                const offsetPosition = elementPosition + window.pageYOffset - offset;
+
+                // Smooth scroll to target
+                window.scrollTo({
+                    top: offsetPosition,
+                    behavior: 'smooth'
+                });
+            }
+        });
+    });
 });
 
     // Image overlay functionality
