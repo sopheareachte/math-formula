@@ -125,6 +125,32 @@ const formulas = [
   },
   {
     category: "Precalculus - Trigonometry",
+    title: "Hyperbolic Definition",
+    formula: [
+      "\\sinh (x) = \\frac{e^x -e^{-x}}{2}",
+      "\\cosh (x) = \\frac{e^x +e^{-x}}{2}",
+      "\\tanh (x) = \\frac{\\sinh (x)}{\\cosh (x)}",
+      "\\coth (x) = \\frac{\\cosh (x)}{\\sinh (x)}",
+      "\\operatorname{sech}(x) = \\frac{1}{\\cosh (x)}",
+      "\\operatorname{csch}(x) = \\frac{1}{\\sinh (x)}",
+    ],
+    sectionId: "hypdef"
+  },
+  {
+    category: "Precalculus - Trigonometry",
+    title: "Hyperbolic Identities",
+    formula: [
+      "\\sinh (-x) = -\\sinh (x)",
+      "\\cosh (-x) = \\cosh (x)",
+      "\\cosh^{2}(x) - \\sinh^{2}(x) = 1",
+      "1-\\tanh^{2} (x) = \\operatorname{sech^2}(x)",
+      "\\sinh (x+y) = \\sinh x\\cosh y + \\cosh x \\sinh y",
+      "\\cosh (x+y) = \\cosh x\\cosh y + \\sinh x\\sinh y",
+    ],
+    sectionId: "hypiden"
+  },
+  {
+    category: "Precalculus - Trigonometry",
     title: "Interactive Unit Circle",
     formula: [
       "\\sin(\\theta), \\cos(\\theta), \\tan(\\theta)",
