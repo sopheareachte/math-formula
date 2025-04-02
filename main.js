@@ -14,8 +14,8 @@ const formulas = [
     title: "Special Factoring Properties",
     formula: [
       "x^2-y^2=(x+y)(x-y)",
-      "x^2-y^2=(x+y)(x-y)",
-      "x^2-2xy+y^2=(x-y)^2",
+      "(x-y)^2=x^2-2xy+y^2",
+      "(x+y)^2=x^2+2xy+y^2",
       "x^3-y^3=(x-y)(x^2+xy+y^2)",
       "x^3+y^3=(x+y)(x^2-xy+y^2)",
     ],
@@ -565,7 +565,7 @@ document.addEventListener('DOMContentLoaded', function() {
     sidebarLinks.forEach(link => {
         link.addEventListener('click', (e) => {
             e.preventDefault(); // Prevent default anchor behavior
-            
+
             // Close sidebar
             sidebar.classList.remove('active');
             overlay.classList.remove('active');
@@ -574,7 +574,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // Get the target element
             const targetId = link.getAttribute('href');
             const targetElement = document.querySelector(targetId);
-            
+
             if (targetElement) {
                 // Calculate header height - adjust this value if your header height changes
                 const headerHeight = document.querySelector('.site-header').offsetHeight;
