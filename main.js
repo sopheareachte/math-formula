@@ -441,7 +441,7 @@ const formulas = [
 ];
 
 const fuse = new Fuse(formulas, {
-  keys: ['title', 'category', 'formula'],
+  keys: ['title', 'category','formula'],
   includeMatches: true,
   threshold: 0.3,
 });
@@ -478,6 +478,8 @@ searchInput.addEventListener('input', function() {
       <p class="text-gray-600">${highlightMatch(result.item.category, result.matches.filter(match => match.key === 'category'))}</p>
       ${formulaHTML}
       `;
+
+
 
       searchResultsList.appendChild(li);
     });
